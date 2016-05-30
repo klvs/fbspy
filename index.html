@@ -44,9 +44,12 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
  */ 
 
 // setup x 
-var xValue = function(d) { return d.time;}, // data -> value
+var xValue = function(d) { return d.time1;}, // data -> value
+    length = function(d) {return d.time2 - d.time1;},
     xScale = d3.scale.linear().range([0, width]), // value -> display
+    wScale = d3.scale.linear().domain([0, 120245]).range([0, width]),
     xMap = function(d) { return xScale(xValue(d));}, // data -> display
+    xLine = function(d) { return wScale(length(d));},
     xAxis = d3.svg.axis().scale(xScale).orient("bottom");
     xScale.clamp(true);
 // console.log(xScale)
@@ -81,7 +84,7 @@ var tooltip = d3.select("body").append("div")
     .style("opacity", 0);
 
 // load data
-d3.csv("compressed.csv", function(error, data) {
+d3.csv("compressed_new.csv", function(error, data) {
 // d3.csv("concat.csv", function(error, data) {
 
   // change string (from CSV) into number format
@@ -122,13 +125,13 @@ d3.csv("compressed.csv", function(error, data) {
       var rectWidth = 2;
       var rectHeight = height/412;
   // draw dots
-  svg.selectAll(".dot")
+  svg.selectAll(".line")
       .data(data)
     // .enter().append("circle")
     .enter().append("rect")
-      .attr("class", "dot")
+      .attr("class", "line")
       // .attr("r", .5)
-      .attr("width", rectWidth)
+      .attr("width", xLine)
       .attr("height", rectHeight)
       // .attr("cx", xMap)
       // .attr("cy", yMap)
