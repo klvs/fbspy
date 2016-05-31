@@ -18,3 +18,9 @@ compressed.csv is the cleaned data. The raw data isn't included in this repo bec
 
 The data comes from my facebook account so plz don't release it on the internet (unanonymized). You can harvest similar data yourself with [defaultnamehere/zzzzz](https://github.com/defaultnamehere/zzzzz). 
 
+### Cleaning Steps
+1. Concatenate and format the raw data into one file using scripts/format.py 
+2. Using scripts/compress we compress the data by shortening the timestamp and coverting our data set from points to line segments.
+3. We then remove the user ID column using excel or numbers
+
+truncate.py -> compress.py -> fudgeIntervals.py -> classification.py
