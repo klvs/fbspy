@@ -1,6 +1,6 @@
 import os
 
-with open(os.getcwd()+'/concat.csv', 'r') as f:
+with open(os.getcwd()+'/truncated.csv', 'r') as f:
 	lines = f.readlines()
 
 lines.pop(0) # pop first (legend)
