@@ -3,7 +3,9 @@ import os
 with open(os.getcwd()+'/truncated.csv', 'r') as f:
 	lines = f.readlines()
 
-lines.pop(0) # pop first (legend)
+legend = lines.pop(0) # pop first (legend)
+with open(os.getcwd()+'/compressed.csv', 'a') as f:
+	f.write(legend)
 # previous = lines.pop(0).split(',') # init the first point
 
 with open(os.getcwd()+'/compressed.csv', 'a') as f:
