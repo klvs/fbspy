@@ -183,7 +183,8 @@ d3.csv("final.csv", function(error, data) {
                .style("top", (d3.event.pageY - 28) + "px");
       })*/
       .on("mouseout", function(d) {
-          tooltip.transition()
+      hoverLineGroup.style("opacity", 1e-6);        
+      tooltip.transition()
                .duration(500)
                .style("opacity", 0);
       });
@@ -208,6 +209,64 @@ d3.csv("final.csv", function(error, data) {
   //     .text(function(d) { return d;})
 });
    
+ 
+    
+    
+    
+    
+    
+////////////////////////////////////////////////////////
+//////////////////GRAPH1////////////////tracker////////////////
+////////////////////////////////////////////////////////    
+ var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S");
+
+// Hover line. 
+var hoverLineGroup = svg.append("g")
+					.attr("class", "hover-line");
+var hoverLine = hoverLineGroup
+	.append("line")
+		.attr("x1", 10).attr("x2", 10) 
+		.attr("y1", 0).attr("y2", height); 
+
+var hoverDate = hoverLineGroup.append('text')
+   .attr("class", "hover-text")
+   .attr('y', height+20);
+
+// Hide hover line by default.
+hoverLineGroup.style("opacity", 1e-6);
+   
+d3.select("body").on("mouseover", function() { 
+  console.log('mouseover')
+}).on("mousemove", function() {
+  console.log('mousemove', d3.mouse(this));
+  var mouse_x = d3.mouse(this)[0];
+  var mouse_y = d3.mouse(this)[1];
+  var graph_y = y.invert(mouse_y);
+  var graph_x = x.invert(mouse_x);
+  console.log(graph_x);
+  var format = d3.time.format('%e %b');
+  //format.parse(graph_x)
+  hoverDate.text(graph_x);
+  hoverDate.attr('x', mouse_x);
+  console.log(x.invert(mouse_x));
+  hoverLine.attr("x1", mouse_x).attr("x2", mouse_x)
+  hoverLineGroup.style("opacity", 1);
+    
+})  .on("mouseout", function() {
+    console.log('mouseout');
+    hoverLineGroup.style("opacity", 1e-6);
+  });    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 ////////////////////////////////////////////////////////
 //////////////////GRAPH1////////////////////////////////
@@ -256,7 +315,7 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 // load data
-d3.csv("compressed_new.csv", function(error, data) {
+d3.csv("final.csv", function(error, data) {
 // d3.csv("concat.csv", function(error, data) {
   // change string (from CSV) into number format
   data.forEach(function(d) {
@@ -312,7 +371,8 @@ d3.csv("compressed_new.csv", function(error, data) {
       .style("fill", function(d) { return color(cValue(d));})
       .style("stroke-width", 0) 
       .on("mouseover", function(d) {
-          tooltip.transition()
+       
+      tooltip.transition()
                .duration(200)
                .style("opacity", .9);
           tooltip.html("User: " + d.index + "<br/>" + "Online: " + toolFormat(xValue(d)) 
