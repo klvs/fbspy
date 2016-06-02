@@ -27,6 +27,13 @@ body {
   height: 28px;
   pointer-events: none;
 }
+    .container{
+        position: relative;
+    }
+    .miniGraphs{
+      position: absolute;
+        bottom=0;
+    }
     .svg { 
     pointer-events: all;
 }
@@ -37,6 +44,9 @@ body {
 }
 </style>
 <body>
+    <div class="container">
+        <div id="main"></div>
+        <div class="miniGraphs"> <</div> </div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
@@ -91,7 +101,7 @@ var cValue = function(d) {
 }
 var color = d3.scale.category10();
 // add the graph canvas to the body of the webpage
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#main").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", (1.25 * height) + margin.top + margin.bottom)
   .append("g")
@@ -280,7 +290,7 @@ d3.select("body").on("mouseover", function() {
 ////////////////////////////////////////////////////////
 //////////////////GRAPH1////////////////////////////////
 ////////////////////////////////////////////////////////
-   var width1=400;
+   var width1=250;
     var height1=600;
     
     x1Value = function(d) {return new Date(d.time1 * 1000);},
@@ -313,7 +323,7 @@ var cValue1 = function(d) {
     
     
   
-    var chart1=d3.select("body").append("svg")
+    var chart1=d3.select(".miniGraphs").append("svg")
     .attr("width", width1 + margin.left + margin.right)
     .attr("height", (1.25 * height1) + margin.top + margin.bottom)
   .append("g")
@@ -415,10 +425,9 @@ d3.csv("final.csv", function(error, data) {
       });
        }); 
     ////////////////////////////////////////////////////////
-//////////////////GRAPH1////////////////////////////////
+//////////////////GRAPH2////////////////////////////////
 ////////////////////////////////////////////////////////
-   var width1=400;
-    var height1=600;
+ 
     
     x1Value = function(d) {return new Date(d.time1 * 1000);},
     x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
@@ -450,7 +459,7 @@ var cValue1 = function(d) {
     
     
   
-    var chart2=d3.select("body").append("svg")
+    var chart2=d3.select(".miniGraphs").append("svg")
     .attr("width", width1 + margin.left + margin.right)
     .attr("height", (1.25 * height1) + margin.top + margin.bottom)
   .append("g")
@@ -507,6 +516,291 @@ d3.csv("final.csv", function(error, data) {
     
   // draw dots
   chart2.selectAll(".line")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "line")
+      .attr("width", xLine1)
+      .attr("height", rectHeight)
+      .attr("x", xMap1)
+      .attr("y", yMap1)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+       
+      tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html("User: " + d.index + "<br/>" + "Online: " + toolFormat(xValue(d)) 
+	       + "<br/>" + "Offline: " + toolFormat(x1Value2(d)))
+               .style("left", (d3.event.pageX + 5) + "px")
+
+  /*svg.selectAll(".dot")
+      .data(data)
+    // .enter().append("circle")
+    .enter().append("rect")
+      .attr("class", "dot")
+      // .attr("r", .5)
+      .attr("width", rectWidth)
+      .attr("height", rectHeight)
+      // .attr("cx", xMap)
+      // .attr("cy", yMap)
+      .attr("x", xMap)
+      .attr("y", yMap)
+      // .style("opacity", .5)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+          tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html(d["Cereal Name"] + "<br/> (" + xValue(d) 
+	        + ", " + yValue(d) + ")")
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
+      })*/
+      });
+    
+    
+    });    
+    
+    
+    
+    
+    ////////////////////////////////////////////////////////
+//////////////////GRAPH3////////////////////////////////
+////////////////////////////////////////////////////////
+
+    
+    x1Value = function(d) {return new Date(d.time1 * 1000);},
+    x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
+    length1 = function(d) {return new Date(d.time2 - d.time1);},
+    //xScale = d3.scale.linear().range([0, width]), // value -> display
+    xScale1 = d3.time.scale().range([0, width1]), // value -> display
+    wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
+    xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
+    xLine1 = function(d) { return wScale1(length(d));},
+    xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format),
+    xScale1.clamp(true);
+    
+// console.log(xScale)
+// setup y
+var yValue1 = function(d) { return d.index;}, // data -> value
+    yScale1 = d3.scale.linear().range([height1, 0]), // value -> display
+    yMap1 = function(d) { return yScale1(yValue1(d));}, // data -> display
+    yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
+// setup fill color
+var cValue1 = function(d) { 
+  // console.log(typeof d.status);
+  if(d.status == '3'){
+    return '#000';
+  } else {
+    return '#fff';
+  }
+  // return 'Ralston Purina';
+} 
+    
+    
+  
+    var chart3=d3.select(".miniGraphs").append("svg")
+    .attr("width", width1 + margin.left + margin.right)
+    .attr("height", (1.25 * height1) + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+// load data
+d3.csv("final.csv", function(error, data) {
+// d3.csv("concat.csv", function(error, data) {
+  // change string (from CSV) into number format
+  data.forEach(function(d) {
+    //d = (new Date(d));
+    d.time1 = +d.time1;
+    d["time1"] = +d["time1"];
+    d.time2 = +d.time2;
+    d["time2"] = +d["time2"];
+    
+//    console.log(d);
+  });
+  // don't want dots overlapping axis, so add in buffer to data domain
+  xScale1.domain([1459809312000, 1459929557000]);
+  yScale1.domain([0,413]);
+  
+  // x-axis
+  chart3.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height1 + ")")
+      .call(xAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width1)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("Time");
+  // y-axis
+  chart3.append("g")
+      .attr("class", "y axis")
+      .call(yAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Person");
+      //var rectWidth = length;
+      //var rectWidth = length / 1000;
+      var ll = 50;
+      var rectHeight = height1/412;
+     
+    
+  // draw dots
+  chart3.selectAll(".line")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "line")
+      .attr("width", xLine1)
+      .attr("height", rectHeight)
+      .attr("x", xMap1)
+      .attr("y", yMap1)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+       
+      tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html("User: " + d.index + "<br/>" + "Online: " + toolFormat(xValue(d)) 
+	       + "<br/>" + "Offline: " + toolFormat(x1Value2(d)))
+               .style("left", (d3.event.pageX + 5) + "px")
+
+  /*svg.selectAll(".dot")
+      .data(data)
+    // .enter().append("circle")
+    .enter().append("rect")
+      .attr("class", "dot")
+      // .attr("r", .5)
+      .attr("width", rectWidth)
+      .attr("height", rectHeight)
+      // .attr("cx", xMap)
+      // .attr("cy", yMap)
+      .attr("x", xMap)
+      .attr("y", yMap)
+      // .style("opacity", .5)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+          tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html(d["Cereal Name"] + "<br/> (" + xValue(d) 
+	        + ", " + yValue(d) + ")")
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
+      })*/
+      });
+    
+    
+    });  
+    
+    
+    
+    
+    
+     ////////////////////////////////////////////////////////
+//////////////////GRAPH4////////////////////////////////
+////////////////////////////////////////////////////////
+
+    
+    x1Value = function(d) {return new Date(d.time1 * 1000);},
+    x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
+    length1 = function(d) {return new Date(d.time2 - d.time1);},
+    //xScale = d3.scale.linear().range([0, width]), // value -> display
+    xScale1 = d3.time.scale().range([0, width1]), // value -> display
+    wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
+    xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
+    xLine1 = function(d) { return wScale1(length(d));},
+    xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format),
+    xScale1.clamp(true);
+    
+// console.log(xScale)
+// setup y
+var yValue1 = function(d) { return d.index;}, // data -> value
+    yScale1 = d3.scale.linear().range([height1, 0]), // value -> display
+    yMap1 = function(d) { return yScale1(yValue1(d));}, // data -> display
+    yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
+// setup fill color
+var cValue1 = function(d) { 
+  // console.log(typeof d.status);
+  if(d.status == '3'){
+    return '#000';
+  } else {
+    return '#fff';
+  }
+  // return 'Ralston Purina';
+} 
+    
+    
+  
+    var chart4=d3.select(".miniGraphs").append("svg")
+    .attr("width", width1 + margin.left + margin.right)
+    .attr("height", (1.25 * height1) + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+// load data
+d3.csv("final.csv", function(error, data) {
+// d3.csv("concat.csv", function(error, data) {
+  // change string (from CSV) into number format
+  data.forEach(function(d) {
+    //d = (new Date(d));
+    d.time1 = +d.time1;
+    d["time1"] = +d["time1"];
+    d.time2 = +d.time2;
+    d["time2"] = +d["time2"];
+    
+//    console.log(d);
+  });
+  // don't want dots overlapping axis, so add in buffer to data domain
+  xScale1.domain([1459809312000, 1459929557000]);
+  yScale1.domain([0,413]);
+  
+  // x-axis
+  chart4.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height1 + ")")
+      .call(xAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width1)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("Time");
+  // y-axis
+  chart4.append("g")
+      .attr("class", "y axis")
+      .call(yAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Person");
+      //var rectWidth = length;
+      //var rectWidth = length / 1000;
+      var ll = 50;
+      var rectHeight = height1/412;
+     
+    
+  // draw dots
+  chart4.selectAll(".line")
       .data(data)
       .enter().append("rect")
       .attr("class", "line")
