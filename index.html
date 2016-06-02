@@ -267,8 +267,8 @@ d3.select("body").on("mouseover", function() {
   var mouse_x = d3.mouse(this)[0];
   var mouse_y = d3.mouse(this)[1];
   var graph_y = y.invert(mouse_y);
-  var graph_x = x.invert(mouse_x);
-  //console.log(graph_x);
+  var graph_x = xScale.invert(mouse_x);
+  console.log(mouse_x);
   var format = d3.time.format('%e %b');
   //format.parse(graph_x)
   hoverDate.text(graph_x);
