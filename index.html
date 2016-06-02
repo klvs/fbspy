@@ -46,7 +46,7 @@ body {
 <body>
     <div class="container">
         <div id="main"></div>
-        <div class="miniGraphs"> <</div> </div>
+        <div class="miniGraphs"> </div> </div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
@@ -82,8 +82,8 @@ var format = d3.time.format("4/" + "%d" + " " + "%X");
     xLine = function(d) { return wScale(length(d));},
     xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(9).tickFormat(format),
     xScale.clamp(true);
-    
-// console.log(xScale)
+ 
+
 // setup y
 var yValue = function(d) { return d.index;}, // data -> value
     yScale = d3.scale.linear().range([height, 0]), // value -> display
@@ -124,8 +124,14 @@ d3.csv("final.csv", function(error, data) {
     
 //    console.log(d);
   });
-  // don't want dots overlapping axis, so add in buffer to data domain
-  xScale.domain([1459809312000, 1459929557000]);
+    
+  
+     var max= d3.max(data, function(d) { return d.time2; })
+     var min= d3.min(data, function(d) { return d.time1; })
+     console.log(max)
+      console.log(min)
+ xScale.domain([min*1000, max*1000]);
+
   yScale.domain([0,413]);
   
   // x-axis
@@ -346,8 +352,10 @@ d3.csv("final.csv", function(error, data) {
     
 //    console.log(d);
   });
-  // don't want dots overlapping axis, so add in buffer to data domain
-  xScale1.domain([1459809312000, 1459929557000]);
+  
+     var max= d3.max(data, function(d) { return d.time2; })
+     var min= d3.min(data, function(d) { return d.time1; })
+  xScale1.domain([min*1000, max*1000]);
   yScale1.domain([0,413]);
   
   // x-axis
@@ -483,7 +491,7 @@ d3.csv("final.csv", function(error, data) {
 //    console.log(d);
   });
   // don't want dots overlapping axis, so add in buffer to data domain
-  xScale1.domain([1459809312000, 1459929557000]);
+//  xScale1.domain([1459809312000, 1459929557000]);
   yScale1.domain([0,413]);
   
   // x-axis
@@ -625,7 +633,7 @@ d3.csv("final.csv", function(error, data) {
 //    console.log(d);
   });
   // don't want dots overlapping axis, so add in buffer to data domain
-  xScale1.domain([1459809312000, 1459929557000]);
+ // xScale1.domain([1459809312000, 1459929557000]);
   yScale1.domain([0,413]);
   
   // x-axis
@@ -768,7 +776,7 @@ d3.csv("final.csv", function(error, data) {
 //    console.log(d);
   });
   // don't want dots overlapping axis, so add in buffer to data domain
-  xScale1.domain([1459809312000, 1459929557000]);
+  //xScale1.domain([1459809312000, 1459929557000]);
   yScale1.domain([0,413]);
   
   // x-axis
