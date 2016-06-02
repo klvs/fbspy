@@ -27,6 +27,14 @@ body {
   height: 28px;
   pointer-events: none;
 }
+    .svg { 
+    pointer-events: all;
+}
+    .hover-line { 
+  stroke: black;  
+
+  stroke-width: .8px;
+}
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -216,10 +224,11 @@ d3.csv("final.csv", function(error, data) {
     
     
 ////////////////////////////////////////////////////////
-//////////////////GRAPH1////////////////tracker////////////////
+//////////////////////////line tracker////////////////
 ////////////////////////////////////////////////////////    
  var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S");
-
+var x = d3.time.scale();  
+var y = d3.scale.linear().range([height, 0]);
 // Hover line. 
 var hoverLineGroup = svg.append("g")
 					.attr("class", "hover-line");
@@ -230,7 +239,7 @@ var hoverLine = hoverLineGroup
 
 var hoverDate = hoverLineGroup.append('text')
    .attr("class", "hover-text")
-   .attr('y', height+20);
+   .attr('y', height+50);
 
 // Hide hover line by default.
 hoverLineGroup.style("opacity", 1e-6);
@@ -238,22 +247,22 @@ hoverLineGroup.style("opacity", 1e-6);
 d3.select("body").on("mouseover", function() { 
   console.log('mouseover')
 }).on("mousemove", function() {
-  console.log('mousemove', d3.mouse(this));
+  //console.log('mousemove', d3.mouse(this));
   var mouse_x = d3.mouse(this)[0];
   var mouse_y = d3.mouse(this)[1];
   var graph_y = y.invert(mouse_y);
   var graph_x = x.invert(mouse_x);
-  console.log(graph_x);
+  //console.log(graph_x);
   var format = d3.time.format('%e %b');
   //format.parse(graph_x)
   hoverDate.text(graph_x);
   hoverDate.attr('x', mouse_x);
-  console.log(x.invert(mouse_x));
+ // console.log(x.invert(mouse_x));
   hoverLine.attr("x1", mouse_x).attr("x2", mouse_x)
   hoverLineGroup.style("opacity", 1);
     
 })  .on("mouseout", function() {
-    console.log('mouseout');
+   // console.log('mouseout');
     hoverLineGroup.style("opacity", 1e-6);
   });    
     
@@ -282,7 +291,7 @@ d3.select("body").on("mouseover", function() {
     wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
     xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
     xLine1 = function(d) { return wScale1(length(d));},
-    xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(9).tickFormat(format),
+    xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format),
     xScale1.clamp(true);
     
 // console.log(xScale)
@@ -404,6 +413,145 @@ d3.csv("final.csv", function(error, data) {
                .style("top", (d3.event.pageY - 28) + "px");
       })*/
       });
+       }); 
+    ////////////////////////////////////////////////////////
+//////////////////GRAPH1////////////////////////////////
+////////////////////////////////////////////////////////
+   var width1=400;
+    var height1=600;
+    
+    x1Value = function(d) {return new Date(d.time1 * 1000);},
+    x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
+    length1 = function(d) {return new Date(d.time2 - d.time1);},
+    //xScale = d3.scale.linear().range([0, width]), // value -> display
+    xScale1 = d3.time.scale().range([0, width1]), // value -> display
+    wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
+    xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
+    xLine1 = function(d) { return wScale1(length(d));},
+    xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format),
+    xScale1.clamp(true);
+    
+// console.log(xScale)
+// setup y
+var yValue1 = function(d) { return d.index;}, // data -> value
+    yScale1 = d3.scale.linear().range([height1, 0]), // value -> display
+    yMap1 = function(d) { return yScale1(yValue1(d));}, // data -> display
+    yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
+// setup fill color
+var cValue1 = function(d) { 
+  // console.log(typeof d.status);
+  if(d.status == '3'){
+    return '#000';
+  } else {
+    return '#fff';
+  }
+  // return 'Ralston Purina';
+} 
+    
+    
+  
+    var chart2=d3.select("body").append("svg")
+    .attr("width", width1 + margin.left + margin.right)
+    .attr("height", (1.25 * height1) + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+// load data
+d3.csv("final.csv", function(error, data) {
+// d3.csv("concat.csv", function(error, data) {
+  // change string (from CSV) into number format
+  data.forEach(function(d) {
+    //d = (new Date(d));
+    d.time1 = +d.time1;
+    d["time1"] = +d["time1"];
+    d.time2 = +d.time2;
+    d["time2"] = +d["time2"];
+    
+//    console.log(d);
+  });
+  // don't want dots overlapping axis, so add in buffer to data domain
+  xScale1.domain([1459809312000, 1459929557000]);
+  yScale1.domain([0,413]);
+  
+  // x-axis
+  chart2.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height1 + ")")
+      .call(xAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width1)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("Time");
+  // y-axis
+  chart2.append("g")
+      .attr("class", "y axis")
+      .call(yAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Person");
+      //var rectWidth = length;
+      //var rectWidth = length / 1000;
+      var ll = 50;
+      var rectHeight = height1/412;
+     
+    
+  // draw dots
+  chart2.selectAll(".line")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "line")
+      .attr("width", xLine1)
+      .attr("height", rectHeight)
+      .attr("x", xMap1)
+      .attr("y", yMap1)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+       
+      tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html("User: " + d.index + "<br/>" + "Online: " + toolFormat(xValue(d)) 
+	       + "<br/>" + "Offline: " + toolFormat(x1Value2(d)))
+               .style("left", (d3.event.pageX + 5) + "px")
+
+  /*svg.selectAll(".dot")
+      .data(data)
+    // .enter().append("circle")
+    .enter().append("rect")
+      .attr("class", "dot")
+      // .attr("r", .5)
+      .attr("width", rectWidth)
+      .attr("height", rectHeight)
+      // .attr("cx", xMap)
+      // .attr("cy", yMap)
+      .attr("x", xMap)
+      .attr("y", yMap)
+      // .style("opacity", .5)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+          tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html(d["Cereal Name"] + "<br/> (" + xValue(d) 
+	        + ", " + yValue(d) + ")")
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
+      })*/
+      });
+    
+    
     });    
 </script>
 </body>
