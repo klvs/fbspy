@@ -31,8 +31,7 @@ body {
         position: relative;
     }
     .miniGraphs{
-      position: absolute;
-        bottom=0;
+  
     }
     .svg { 
     pointer-events: all;
@@ -46,7 +45,32 @@ body {
 <body>
     <div class="container">
         <div id="main"></div>
-        <div class="miniGraphs"> </div> </div>
+        <div class="miniGraphs"> </div> 
+
+       <h4>Created by Ido Kinel, Alexander Roman, and Austin Provansal</h4>
+      
+    <h4>Description: Facebook user activity, graphed and analyzed</h4>
+   
+    <!-- Create a list using <ul> and <li> tag -->   
+    <h4>Files Submitted:</h4>
+    
+    <ul>
+        <li><a href=index.html>index.html</a></li>
+        <li><a href="final.csv">final.csv</a></li>
+     
+    </ul>
+      
+  
+      
+    <h4> Sources: </h4>
+      <ul>
+          <li><a href="https://github.com/klvs/fbspy">Our GitHub repo</a></li>
+          <li>bl.ocks.org/mbostock/3892919</li>
+      </ul>
+      </ul>
+      </div>
+    
+    
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
@@ -236,7 +260,7 @@ d3.csv("final.csv", function(error, data) {
  
     
     
-    
+   
     
     
 ////////////////////////////////////////////////////////
@@ -248,6 +272,8 @@ var y = d3.scale.linear().range([height, 0]);
 // Hover line. 
 var hoverLineGroup = svg.append("g")
 					.attr("class", "hover-line");
+    
+
 var hoverLine = hoverLineGroup
 	.append("line")
 		.attr("x1", 10).attr("x2", 10) 
@@ -260,7 +286,7 @@ var hoverDate = hoverLineGroup.append('text')
 // Hide hover line by default.
 hoverLineGroup.style("opacity", 1e-6);
    
-d3.select("body").on("mouseover", function() { 
+d3.select("#main").on("mouseover", function() { 
   console.log('mouseover')
 }).on("mousemove", function() {
   //console.log('mousemove', d3.mouse(this));
@@ -283,9 +309,7 @@ d3.select("body").on("mouseover", function() {
   });    
     
     
-    
-    
-    
+
     
     
     
@@ -431,7 +455,55 @@ d3.csv("final.csv", function(error, data) {
                .style("top", (d3.event.pageY - 28) + "px");
       })*/
       });
-       }); 
+       });
+    
+    
+    
+    
+    
+    
+    var hoverLineGroup1 = chart1.append("g")
+					.attr("class", "hover-line");
+    
+
+var hoverLine1 = hoverLineGroup1
+	.append("line")
+		.attr("x1", 10).attr("x2", 10) 
+		.attr("y1", 0).attr("y2", height1); 
+
+var hoverDate1 = hoverLineGroup1.append('text')
+   .attr("class", "hover-text")
+   .attr('y', height1+50);
+
+// Hide hover line by default.
+hoverLineGroup1.style("opacity", 1e-6);
+   
+d3.select(".miniGraphs").on("mouseover", function() { 
+  console.log('mouseover')
+}).on("mousemove", function() {
+  //console.log('mousemove', d3.mouse(this));
+  var mouse_x = d3.mouse(this)[0];
+  var mouse_y = d3.mouse(this)[1];
+  var graph_y1 = y.invert(mouse_y);
+  var graph_x1 = xScale.invert(mouse_x);
+  console.log(mouse_x);
+  var format = d3.time.format('%e %b');
+  //format.parse(graph_x)
+  hoverDate1.text(graph_x1);
+  hoverDate1.attr('x', mouse_x);
+ // console.log(x.invert(mouse_x));
+  hoverLine1.attr("x1", mouse_x).attr("x2", mouse_x)
+  hoverLineGroup1.style("opacity", 1);
+    
+})  .on("mouseout", function() {
+   // console.log('mouseout');
+    hoverLineGroup1.style("opacity", 1e-6);
+  });    
+    
+    
+    
+    
+    
     ////////////////////////////////////////////////////////
 //////////////////GRAPH2////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -570,6 +642,45 @@ d3.csv("final.csv", function(error, data) {
     
     
     });    
+    
+     var hoverLineGroup2 = chart2.append("g")
+					.attr("class", "hover-line");
+    
+
+var hoverLine2= hoverLineGroup2
+	.append("line")
+		.attr("x1", 10).attr("x2", 10) 
+		.attr("y1", 0).attr("y2", height1); 
+
+var hoverDate2 = hoverLineGroup2.append('text')
+   .attr("class", "hover-text")
+   .attr('y', height1+50);
+
+// Hide hover line by default.
+hoverLineGroup2.style("opacity", 1e-6);
+   
+d3.select("chart2").on("mouseover", function() { 
+  console.log('mouseover')
+}).on("mousemove", function() {
+  //console.log('mousemove', d3.mouse(this));
+  var mouse_x2 = d3.mouse(this)[0]-300;
+  var mouse_y2 = d3.mouse(this)[1];
+  var graph_y2 = y.invert(mouse_y2);
+  var graph_x2 = xScale.invert(mouse_x2);
+  //console.log(mouse_x);
+  var format = d3.time.format('%e %b');
+  //format.parse(graph_x)
+  hoverDate2.text(graph_x2);
+  hoverDate2.attr('x', mouse_x2);
+ // console.log(x.invert(mouse_x));
+  hoverLine2.attr("x1", mouse_x2).attr("x2", mouse_x2)
+  hoverLineGroup2.style("opacity", 1);
+    
+})  .on("mouseout", function() {
+   // console.log('mouseout');
+    hoverLineGroup2.style("opacity", 1e-6);
+  });    
+    
     
     
     

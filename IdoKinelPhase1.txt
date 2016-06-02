@@ -1,0 +1,8 @@
+1.Created main graphic used for class presentation.
+2.helped with cleaning script algorithem used by Alex to change points into lines
+3.Added tracker line and label
+4.curated the code needed to translate unix time stamp into normal time stamps in d3
+5.added mini graphs to show multiple day.
+:s
+:x
+6.Fixed bounds on graphs.
