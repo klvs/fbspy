@@ -27,8 +27,50 @@ body {
   height: 28px;
   pointer-events: none;
 }
+    .container{
+        position: relative;
+    }
+    .miniGraphs{
+  
+    }
+    .svg { 
+    pointer-events: all;
+}
+    .hover-line { 
+  stroke: black;  
+
+  stroke-width: .8px;
+}
 </style>
 <body>
+    <div class="container">
+        <div id="main"></div>
+        <div class="miniGraphs"> </div> 
+
+       <h4>Created by Ido Kinel, Alexander Roman, and Austin Provansal</h4>
+      
+    <h4>Description: Facebook user activity, graphed and analyzed</h4>
+   
+    <!-- Create a list using <ul> and <li> tag -->   
+    <h4>Files Submitted:</h4>
+    
+    <ul>
+        <li><a href=index.html>index.html</a></li>
+        <li><a href="final.csv">final.csv</a></li>
+     
+    </ul>
+      
+  
+      
+    <h4> Sources: </h4>
+      <ul>
+          <li><a href="https://github.com/klvs/fbspy">Our GitHub repo</a></li>
+          <li>bl.ocks.org/mbostock/3892919</li>
+      </ul>
+      </ul>
+      </div>
+    
+    
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
@@ -64,8 +106,7 @@ var format = d3.time.format("4/" + "%d" + " " + "%X");
     xLine = function(d) { return wScale(length(d));},
     xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(9).tickFormat(format),
     xScale.clamp(true);
-    
-// console.log(xScale)
+
 // setup y
 var yValue = function(d) { return d.index;}, // data -> value
     yScale = d3.scale.linear().range([height, 0]), // value -> display
@@ -83,11 +124,19 @@ var cValue = function(d) {
 }
 var color = d3.scale.category10();
 // add the graph canvas to the body of the webpage
+
 var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", (1.25 * height) + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    	.attr("width", width + margin.left + margin.right)
+    	.attr("height", (1.25 * height) + margin.top + margin.bottom)
+  	.append("g")
+    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    	.append("g")
+     	.call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
+     	.append("g");
+     svg.append('svg:rect')
+     	.attr('width', width)
+	.attr('height', height)
+	.attr('fill', 'white');
 
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
@@ -104,10 +153,14 @@ d3.csv("final.csv", function(error, data) {
     d.time2 = +d.time2;
     d["time2"] = +d["time2"];
     
-//    console.log(d);
   });
-  // don't want dots overlapping axis, so add in buffer to data domain
-  xScale.domain([1459809312000, 1459929557000]);
+
+     var max= d3.max(data, function(d) { return d.time2; })
+     var min= d3.min(data, function(d) { return d.time1; })
+     console.log(max)
+      console.log(min)
+ xScale.domain([min*1000, max*1000]);
+
   yScale.domain([0,413]);
   
   // x-axis
@@ -158,32 +211,10 @@ d3.csv("final.csv", function(error, data) {
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
       })
-  /*svg.selectAll(".dot")
-      .data(data)
-    // .enter().append("circle")
-    .enter().append("rect")
-      .attr("class", "dot")
-      // .attr("r", .5)
-      .attr("width", rectWidth)
-      .attr("height", rectHeight)
-      // .attr("cx", xMap)
-      // .attr("cy", yMap)
-      .attr("x", xMap)
-      .attr("y", yMap)
-      // .style("opacity", .5)
-      .style("fill", function(d) { return color(cValue(d));})
-      .style("stroke-width", 0) 
-      .on("mouseover", function(d) {
-          tooltip.transition()
-               .duration(200)
-               .style("opacity", .9);
-          tooltip.html(d["Cereal Name"] + "<br/> (" + xValue(d) 
-	        + ", " + yValue(d) + ")")
-               .style("left", (d3.event.pageX + 5) + "px")
-               .style("top", (d3.event.pageY - 28) + "px");
-      })*/
+
       .on("mouseout", function(d) {
-          tooltip.transition()
+      hoverLineGroup.style("opacity", 1e-6);        
+      tooltip.transition()
                .duration(500)
                .style("opacity", 0);
       });
@@ -193,20 +224,553 @@ d3.csv("final.csv", function(error, data) {
     .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-  // // draw legend colored rectangles
-  // legend.append("rect")
-  //     .attr("x", width - 18)
-  //     .attr("width", 18)
-  //     .attr("height", 18)
-  //     .style("fill", color);
-  // // draw legend text
-  // legend.append("text")
-  //     .attr("x", width - 24)
-  //     .attr("y", 9)
-  //     .attr("dy", ".35em")
-  //     .style("text-anchor", "end")
-  //     .text(function(d) { return d;})
 });
+    
+////////////////////////////////////////////////////////
+//////////////////////////line tracker////////////////
+////////////////////////////////////////////////////////    
+ var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S");
+var x = d3.time.scale();  
+var y = d3.scale.linear().range([height, 0]);
+// Hover line. 
+var hoverLineGroup = svg.append("g")
+					.attr("class", "hover-line");
+    
+
+var hoverLine = hoverLineGroup
+	.append("line")
+		.attr("x1", 10).attr("x2", 10) 
+		.attr("y1", 0).attr("y2", height); 
+
+var hoverDate = hoverLineGroup.append('text')
+   .attr("class", "hover-text")
+   .attr('y', height+50);
+
+// Hide hover line by default.
+hoverLineGroup.style("opacity", 1e-6);
+   
+d3.select("#main").on("mouseover", function() { 
+  console.log('mouseover')
+}).on("mousemove", function() {
+  var mouse_x = d3.mouse(this)[0];
+  var mouse_y = d3.mouse(this)[1];
+  var graph_y = y.invert(mouse_y);
+  var graph_x = xScale.invert(mouse_x);
+  var format = d3.time.format('%e %b');
+  hoverDate.text(graph_x);
+  hoverDate.attr('x', mouse_x);
+  hoverLine.attr("x1", mouse_x).attr("x2", mouse_x)
+  hoverLineGroup.style("opacity", 1);
+    
+})  .on("mouseout", function() {
+    hoverLineGroup.style("opacity", 1e-6);
+  });    
+    
+////////////////////////////////////////////////////////
+//////////////////GRAPH1////////////////////////////////
+////////////////////////////////////////////////////////
+  var width1=250;
+  var height1=600;
+  
+  var x1Value = function(d) {return new Date(d.time1 * 1000);},
+    x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
+    length1 = function(d) {return new Date(d.time2 - d.time1);};
+
+  var xScale1 = d3.time.scale().range([0, width1]), // value -> display
+    wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
+    xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
+    xLine1 = function(d) { return wScale1(length(d));},
+    xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
+
+  xScale1.clamp(true);
+    
+// setup y
+var yValue1 = function(d) { return d.index;}, // data -> value
+    yScale1 = d3.scale.linear().range([height1, 0]), // value -> display
+    yMap1 = function(d) { return yScale1(yValue1(d));}, // data -> display
+    yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
+// setup fill color
+var cValue1 = function(d) { 
+  if(d.status == '3'){
+    return '#000';
+  } else {
+    return '#fff';
+  }
+} 
+    
+    
+  
+var chart1 = d3.select(".miniGraphs").append("svg")
+  .attr("width", width1 + margin.left + margin.right)
+  .attr("height", (1.25 * height1) + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+// load data
+d3.csv("final.csv", function(error, data) {
+  // change string (from CSV) into number format
+  data.forEach(function(d) {
+    //d = (new Date(d));
+    d.time1 = +d.time1;
+    d["time1"] = +d["time1"];
+    d.time2 = +d.time2;
+    d["time2"] = +d["time2"];
+});
+  
+var max= d3.max(data, function(d) { return d.time2; })
+var min= d3.min(data, function(d) { return d.time1; })
+xScale1.domain([min*1000, max*1000]);
+yScale1.domain([0,413]);
+
+  // x-axis
+  chart1.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height1 + ")")
+      .call(xAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width1)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("Time");
+  // y-axis
+  chart1.append("g")
+      .attr("class", "y axis")
+      .call(yAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Person");
+      var ll = 50;
+      var rectHeight = height1/412;
+     
+    
+  // draw dots
+  chart1.selectAll(".line")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "line")
+      .attr("width", xLine1)
+      .attr("height", rectHeight)
+      .attr("x", xMap1)
+      .attr("y", yMap1)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+       
+      tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html("User: " + d.index + "<br/>" + "Online: " + toolFormat(xValue(d)) 
+	       + "<br/>" + "Offline: " + toolFormat(x1Value2(d)))
+               .style("left", (d3.event.pageX + 5) + "px")
+
+      });
+       });
+    
+    
+    
+    
+    
+    
+  var hoverLineGroup1 = chart1.append("g")
+		.attr("class", "hover-line");
+    
+
+var hoverLine1 = hoverLineGroup1
+	.append("line")
+	.attr("x1", 10).attr("x2", 10) 
+	.attr("y1", 0).attr("y2", height1); 
+
+var hoverDate1 = hoverLineGroup1.append('text')
+   .attr("class", "hover-text")
+   .attr('y', height1+50);
+
+// Hide hover line by default.
+hoverLineGroup1.style("opacity", 1e-6);
+   
+d3.select(".miniGraphs").on("mouseover", function() {/* do something */})
+  .on("mousemove", function() {
+  //console.log('mousemove', d3.mouse(this));
+    var mouse_x = d3.mouse(this)[0];
+    var mouse_y = d3.mouse(this)[1];
+    var graph_y1 = y.invert(mouse_y);
+    var graph_x1 = xScale.invert(mouse_x);
+    console.log(mouse_x);
+    var format = d3.time.format('%e %b');
+    //format.parse(graph_x)
+    hoverDate1.text(graph_x1);
+    hoverDate1.attr('x', mouse_x);
+    // console.log(x.invert(mouse_x));
+    hoverLine1.attr("x1", mouse_x).attr("x2", mouse_x)
+    hoverLineGroup1.style("opacity", 1);
+  }).on("mouseout", function() {
+    hoverLineGroup1.style("opacity", 1e-6);
+  });    
+    
+    
+    
+    
+    
+    ////////////////////////////////////////////////////////
+//////////////////GRAPH2////////////////////////////////
+////////////////////////////////////////////////////////
+ 
+    
+var x1Value = function(d) {return new Date(d.time1 * 1000);},
+  x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
+  length1 = function(d) {return new Date(d.time2 - d.time1);},
+  xScale1 = d3.time.scale().range([0, width1]), // value -> display
+  wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
+  xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
+  xLine1 = function(d) { return wScale1(length(d));},
+  xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
+
+xScale1.clamp(true);
+    
+// setup y
+var yValue1 = function(d) { return d.index;}, // data -> value
+    yScale1 = d3.scale.linear().range([height1, 0]), // value -> display
+    yMap1 = function(d) { return yScale1(yValue1(d));}, // data -> display
+    yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
+    
+// setup fill color
+var cValue1 = function(d) { 
+  if(d.status == '3'){
+    return '#000';
+  } else {
+    return '#fff';
+  }
+} 
+    
+    
+  
+var chart2 = d3.select(".miniGraphs").append("svg")
+  .attr("width", width1 + margin.left + margin.right)
+  .attr("height", (1.25 * height1) + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+// load data
+d3.csv("final.csv", function(error, data) {
+  data.forEach(function(d) {
+    //d = (new Date(d));
+    d.time1 = +d.time1;
+    d["time1"] = +d["time1"];
+    d.time2 = +d.time2;
+    d["time2"] = +d["time2"];
+    
+  });
+
+  // don't want dots overlapping axis, so add in buffer to data domain
+  yScale1.domain([0,413]);
+  
+  // x-axis
+  chart2.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height1 + ")")
+      .call(xAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width1)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("Time");
+  // y-axis
+  chart2.append("g")
+      .attr("class", "y axis")
+      .call(yAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Person");
+      var ll = 50;
+      var rectHeight = height1/412;
+     
+    
+  // draw dots
+  chart2.selectAll(".line")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "line")
+      .attr("width", xLine1)
+      .attr("height", rectHeight)
+      .attr("x", xMap1)
+      .attr("y", yMap1)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+        tooltip.transition()
+         .duration(200)
+         .style("opacity", .9);
+        tooltip.html("User: " + d.index + "<br/>" + "Online: " + toolFormat(xValue(d)) 
+          + "<br/>" + "Offline: " + toolFormat(x1Value2(d)))
+          .style("left", (d3.event.pageX + 5) + "px")
+    });
+});    
+    
+var hoverLineGroup2 = chart2.append("g")
+  .attr("class", "hover-line");
+    
+
+var hoverLine2= hoverLineGroup2
+	.append("line")
+		.attr("x1", 10).attr("x2", 10) 
+		.attr("y1", 0).attr("y2", height1); 
+
+var hoverDate2 = hoverLineGroup2.append('text')
+   .attr("class", "hover-text")
+   .attr('y', height1+50);
+
+// Hide hover line by default.
+hoverLineGroup2.style("opacity", 1e-6);
+   
+d3.select("chart2").on("mouseover", function() {/* do something */}).on("mousemove", function() {
+  var mouse_x2 = d3.mouse(this)[0]-300;
+  var mouse_y2 = d3.mouse(this)[1];
+  var graph_y2 = y.invert(mouse_y2);
+  var graph_x2 = xScale.invert(mouse_x2);
+  var format = d3.time.format('%e %b');
+  hoverDate2.text(graph_x2);
+  hoverDate2.attr('x', mouse_x2);
+  hoverLine2.attr("x1", mouse_x2).attr("x2", mouse_x2)
+  hoverLineGroup2.style("opacity", 1);
+  }).on("mouseout", function() {
+    hoverLineGroup2.style("opacity", 1e-6);
+  });    
+    
+
+////////////////////////////////////////////////////////
+//////////////////GRAPH3////////////////////////////////
+////////////////////////////////////////////////////////
+    
+var x1Value = function(d) {return new Date(d.time1 * 1000);},
+  x1Value2 = function(d) {return new Date(d.time2 * 1000);}, // data -> value
+  length1 = function(d) {return new Date(d.time2 - d.time1);},
+  xScale1 = d3.time.scale().range([0, width1]), // value -> display
+  wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
+  xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
+  xLine1 = function(d) { return wScale1(length(d));},
+  xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
+
+xScale1.clamp(true);
+    
+// console.log(xScale)
+// setup y
+var yValue1 = function(d) { return d.index;}, // data -> value
+    yScale1 = d3.scale.linear().range([height1, 0]), // value -> display
+    yMap1 = function(d) { return yScale1(yValue1(d));}, // data -> display
+    yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
+// setup fill color
+var cValue1 = function(d) { 
+  // console.log(typeof d.status);
+  if(d.status == '3'){
+    return '#000';
+  } else {
+    return '#fff';
+  }
+} 
+    
+  
+var chart3=d3.select(".miniGraphs").append("svg")
+  .attr("width", width1 + margin.left + margin.right)
+  .attr("height", (1.25 * height1) + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
+
+// load data
+d3.csv("final.csv", function(error, data) {
+// d3.csv("concat.csv", function(error, data) {
+  // change string (from CSV) into number format
+  data.forEach(function(d) {
+    //d = (new Date(d));
+    d.time1 = +d.time1;
+    d["time1"] = +d["time1"];
+    d.time2 = +d.time2;
+    d["time2"] = +d["time2"];
+    
+  });
+  // don't want dots overlapping axis, so add in buffer to data domain
+  yScale1.domain([0,413]);
+  
+  // x-axis
+  chart3.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height1 + ")")
+      .call(xAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width1)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("Time");
+  // y-axis
+  chart3.append("g")
+      .attr("class", "y axis")
+      .call(yAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Person");
+      //var rectWidth = length;
+      //var rectWidth = length / 1000;
+      var ll = 50;
+      var rectHeight = height1/412;
+     
+    
+  // draw dots
+  chart3.selectAll(".line")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "line")
+      .attr("width", xLine1)
+      .attr("height", rectHeight)
+      .attr("x", xMap1)
+      .attr("y", yMap1)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+       
+      tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html("User: " + d.index + "<br/>" + "Online: " + toolFormat(xValue(d)) 
+	       + "<br/>" + "Offline: " + toolFormat(x1Value2(d)))
+               .style("left", (d3.event.pageX + 5) + "px")
+    });
+});  
+
+////////////////////////////////////////////////////////
+//////////////////GRAPH4////////////////////////////////
+////////////////////////////////////////////////////////
+    
+var x1Value = function(d) {return new Date(d.time1 * 1000);},
+  x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
+  length1 = function(d) {return new Date(d.time2 - d.time1);},
+  xScale1 = d3.time.scale().range([0, width1]), // value -> display
+  wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
+  xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
+  xLine1 = function(d) { return wScale1(length(d));},
+  xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
+
+xScale1.clamp(true);
+    
+// setup y
+var yValue1 = function(d) { return d.index;}, // data -> value
+    yScale1 = d3.scale.linear().range([height1, 0]), // value -> display
+    yMap1 = function(d) { return yScale1(yValue1(d));}, // data -> display
+    yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
+// setup fill color
+var cValue1 = function(d) { 
+  if(d.status == '3'){
+    return '#000';
+  } else {
+    return '#fff';
+  }
+} 
+    
+    
+  
+var chart4=d3.select(".miniGraphs").append("svg")
+  .attr("width", width1 + margin.left + margin.right)
+  .attr("height", (1.25 * height1) + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
+
+// load data
+d3.csv("final.csv", function(error, data) {
+  // change string (from CSV) into number format
+  data.forEach(function(d) {
+    d.time1 = +d.time1;
+    d["time1"] = +d["time1"];
+    d.time2 = +d.time2;
+    d["time2"] = +d["time2"];
+  });
+
+  // don't want dots overlapping axis, so add in buffer to data domain
+  yScale1.domain([0,413]);
+  
+  // x-axis
+  chart4.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height1 + ")")
+      .call(xAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width1)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("Time");
+
+  // y-axis
+  chart4.append("g")
+      .attr("class", "y axis")
+      .call(yAxis1)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Person");
+      //var rectWidth = length;
+      //var rectWidth = length / 1000;
+      var ll = 50;
+      var rectHeight = height1/412;
+    
+  // draw dots
+  chart4.selectAll(".line")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "line")
+      .attr("width", xLine1)
+      .attr("height", rectHeight)
+      .attr("x", xMap1)
+      .attr("y", yMap1)
+      .style("fill", function(d) { return color(cValue(d));})
+      .style("stroke-width", 0) 
+      .on("mouseover", function(d) {
+        tooltip.transition()
+          .duration(200)
+          .style("opacity", .9);
+          tooltip.html("User: " + d.index + "<br/>" + "Online: " + toolFormat(xValue(d)) 
+          + "<br/>" + "Offline: " + toolFormat(x1Value2(d)))
+          .style("left", (d3.event.pageX + 5) + "px")
+      });
+    });
+
+function zoom() {
+	svg.attr("transform", "translate(" + d3.event.translate + ")scale("
+	+ d3.event.scale + ")");
+}
+
 </script>
 </body>
 </html>
