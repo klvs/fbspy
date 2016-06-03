@@ -125,7 +125,7 @@ var cValue = function(d) {
 var color = d3.scale.category10();
 // add the graph canvas to the body of the webpage
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#main").append("svg")
     	.attr("width", width + margin.left + margin.right)
     	.attr("height", (1.25 * height) + margin.top + margin.bottom)
   	.append("g")
@@ -252,7 +252,7 @@ hoverLineGroup.style("opacity", 1e-6);
 d3.select("#main").on("mouseover", function() { 
   console.log('mouseover')
 }).on("mousemove", function() {
-  var mouse_x = d3.mouse(this)[0];
+  var mouse_x = d3.mouse(this)[0]-40;
   var mouse_y = d3.mouse(this)[1];
   var graph_y = y.invert(mouse_y);
   var graph_x = xScale.invert(mouse_x);
