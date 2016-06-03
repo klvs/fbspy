@@ -1,0 +1,34 @@
+body {
+  font: 11px sans-serif;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.dot {
+  stroke: #000;
+}
+.line {
+  stroke: #bbb;
+}
+.tooltip {
+  position: absolute;
+  width: 200px;
+  height: 28px;
+  pointer-events: none;
+}
+.container{
+  position: relative;
+}
+.miniGraphs{
+  
+}
+.svg { 
+  pointer-events: all;
+}
+.hover-line { 
+  stroke: black;  
+  stroke-width: .8px;
+}
