@@ -17,7 +17,7 @@ for line in lines:
 	time2 = int(split[2])
 
 	if time1 == time2:
-		time2 = time1 + 30
+		time2 = time1 + 60
 
 	with open(os.getcwd()+'/final.csv', 'a') as f:
 		f.write(str(index) + ',' + str(time1) + ',' + str(time2) + '\n')
