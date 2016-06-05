@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+FF<!DOCTYPE html>
 <html>
 <head>
   <!-- Bootstrap Core CSS -->
@@ -130,7 +130,7 @@ var color = d3.scale.category10();
 var svg = d3.select("#main").append("svg")
     	.attr("width", width + margin.left + margin.right)
     	.attr("height", (1.25 * height) + margin.top + margin.bottom)
-  	.append("g")
+  	// .append("g")
     	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     	.append("g")
      	.call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
@@ -313,7 +313,7 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 // load data
-d3.csv("final.csv", function(error, data) {
+d3.csv("day1.csv", function(error, data) {
   // change string (from CSV) into number format
   data.forEach(function(d) {
     //d = (new Date(d));
@@ -465,7 +465,7 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 // load data
-d3.csv("final.csv", function(error, data) {
+d3.csv("day2.csv", function(error, data) {
   data.forEach(function(d) {
     //d = (new Date(d));
     d.time1 = +d.time1;
@@ -600,7 +600,7 @@ var tooltip = d3.select("body").append("div")
   .style("opacity", 0);
 
 // load data
-d3.csv("final.csv", function(error, data) {
+d3.csv("day3.csv", function(error, data) {
 // d3.csv("concat.csv", function(error, data) {
   // change string (from CSV) into number format
   data.forEach(function(d) {
@@ -707,7 +707,7 @@ var tooltip = d3.select("body").append("div")
   .style("opacity", 0);
 
 // load data
-d3.csv("final.csv", function(error, data) {
+d3.csv("final4.csv", function(error, data) {
   // change string (from CSV) into number format
   data.forEach(function(d) {
     d.time1 = +d.time1;

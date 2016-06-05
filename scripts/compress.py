@@ -1,12 +1,12 @@
 import os
 
-with open(os.getcwd()+'/truncated.csv', 'r') as f:
+with open(os.getcwd()+'/raw.csv', 'r') as f:
 	lines = f.readlines()
 
 legend = lines.pop(0) # pop first (legend)
-with open(os.getcwd()+'/compressed.csv', 'a') as f:
-	f.write(legend)
-# previous = lines.pop(0).split(',') # init the first point
+# with open(os.getcwd()+'/compressed.csv', 'a') as f:
+# 	f.write(legend)
+previous = lines.pop(0).split(',') # init the first point
 
 with open(os.getcwd()+'/compressed.csv', 'a') as f:
 	last = lines[0].split(',')

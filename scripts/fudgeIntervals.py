@@ -2,13 +2,14 @@
 # When compressing the data, these users are counted as being online for 0s
 # This script counts those intervals as 30 seconds long
 import os
+import sys
 
-with open('./compressed.csv', 'r') as f:
+with open('./removed_uid.csv', 'r') as f:
 	lines = f.readlines()
-legend = lines.pop(0) # pop first (legend)
+# legend = lines.pop(0) # pop first (legend)
 
-with open(os.getcwd()+'/final.csv', 'a') as f:
-	f.write(legend)
+# with open(os.getcwd()+'/final.csv', 'a') as f:
+# 	f.write(legend)
 
 for line in lines:
 	split = line.split(',')
@@ -19,7 +20,7 @@ for line in lines:
 	if time1 == time2:
 		time2 = time1 + 60
 
-	with open(os.getcwd()+'/final.csv', 'a') as f:
+	with open(os.getcwd()+ '/' + sys.argv[1], 'a') as f:
 		f.write(str(index) + ',' + str(time1) + ',' + str(time2) + '\n')
 
 

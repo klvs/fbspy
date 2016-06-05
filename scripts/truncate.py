@@ -1,7 +1,7 @@
 
 with open('./concat.csv', 'r') as f:
 	lines = f.readlines()
-lines.pop(0)
+# lines.pop(0)
 with open('./truncated.csv', 'a') as f:
 	f.write('index,time1,time2\n')
 for line in lines:
