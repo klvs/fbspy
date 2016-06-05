@@ -1,5 +1,0 @@
-1. GitHub repository: https://github.com/klvs/fbspy
-	Mount: klvs.github.io/fbspy
-2. During this phase I helped Ido format the input of our program as well as how it displayed time. I worked individually 
-on the tool tip and zoom functionalities. The biggest challenges have still been working around csv files, additionally 
-the csv uses an epoch timestamp for recording the time users are online.  

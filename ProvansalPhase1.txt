@@ -1,7 +1,0 @@
-1. GitHub repository: https://github.com/klvs/fbspy
-Mount: klvs.github.io/fbspy
-2. My main contribution to the project so far has been preparing the visualization code for the
-optimized version of our Python script. Alex has been altering our data collection script so that
-we can compress our csv further and in order to do this our D3 code needs to be changed to fit
-with the script output. I have also been participating in all of the discussion about the design and
-logistics of our visualization.
