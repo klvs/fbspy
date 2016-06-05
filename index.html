@@ -102,7 +102,7 @@ var format = d3.time.format("4/" + "%d" + " " + "%X");
     xValue2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
     length = function(d) {return new Date(d.time2 - d.time1);},
     //xScale = d3.scale.linear().range([0, width]), // value -> display
-    xScale = d3.time.scale().range([0, width]), // value -> display
+    xScale = d3.time.scale().domain([1459810805, 1459897254]).range([0, width]), // value -> display
     wScale = d3.scale.linear().domain([0, 120245]).range([0, width]),
     xMap = function(d) { return xScale(xValue(d));}, // data -> display
     xLine = function(d) { return wScale(length(d));},
@@ -111,7 +111,7 @@ var format = d3.time.format("4/" + "%d" + " " + "%X");
 
 // setup y
 var yValue = function(d) { return d.index;}, // data -> value
-    yScale = d3.scale.linear().range([height, 0]), // value -> display
+    yScale = d3.scale.linear().domain([0,500]).range([height, 0]), // value -> display
     yMap = function(d) { return yScale(yValue(d));}, // data -> display
     yAxis = d3.svg.axis().scale(yScale).orient("left");
 // setup fill color
@@ -124,6 +124,11 @@ var cValue = function(d) {
   }
   // return 'Ralston Purina';
 }
+
+var zoom = d3.behavior.zoom()
+    .x(xScale)
+    .y(yScale)
+    .on("zoom", zoomed);
 var color = d3.scale.category10();
 // add the graph canvas to the body of the webpage
 
@@ -133,13 +138,13 @@ var svg = d3.select("#main").append("svg")
   	.append("g")
     	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     	.append("g")
-     	.call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
+     	 .call(zoom)
      	.append("g");
      svg.append('svg:rect')
      	.attr('width', width)
 	.attr('height', height)
 	.attr('fill', 'white');
-
+   
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -169,6 +174,7 @@ d3.csv("final.csv", function(error, data) {
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
+       
       .call(xAxis)
     .append("text")
       .attr("class", "label")
@@ -176,6 +182,9 @@ d3.csv("final.csv", function(error, data) {
       .attr("y", -6)
       .style("text-anchor", "end")
       .text("Time");
+    
+
+        
   // y-axis
   svg.append("g")
       .attr("class", "y axis")
@@ -200,8 +209,10 @@ d3.csv("final.csv", function(error, data) {
       .attr("class", "line")
       .attr("width", xLine)
       .attr("height", rectHeight)
+  .call(zoom) 
       .attr("x", xMap)
       .attr("y", yMap)
+        
       .style("fill", function(d) { return color(cValue(d));})
       .style("stroke-width", 0) 
       .on("mouseover", function(d) {
@@ -221,11 +232,7 @@ d3.csv("final.csv", function(error, data) {
                .style("opacity", 0);
       });
   // draw legend
-  var legend = svg.selectAll(".legend")
-      .data(color.domain())
-    .enter().append("g")
-      .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+ 
 });
     
 ////////////////////////////////////////////////////////
@@ -768,11 +775,17 @@ d3.csv("final.csv", function(error, data) {
       });
     });
 
-function zoom() {
-	svg.attr("transform", "translate(" + d3.event.translate + ")scale("
-	+ d3.event.scale + ")");
-}
+function zoomed() {
+    svg.select(".x.axis").call(xAxis);
+    svg.select(".y.axis").call(yAxis);
 
+    svg.selectAll(".line")
+        .attr("transform", transform);
+  }
+
+  function transform(d) {
+    return "translate(" + xScale(d["time1"]) + "," + yScale(d["index"]) + ")";
+  }
 </script>
 </body>
 </html>
