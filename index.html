@@ -76,14 +76,14 @@ FF<!DOCTYPE html>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
+
+// Constants go at the top, yo
+
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    
-    width = 960 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-    
-    /*width = 960 - margin.left - margin.right,
-    height = 900 - margin.top - margin.bottom;*/
-    
+  width = 960 - margin.left - margin.right,
+  height = 400 - margin.top - margin.bottom;
+
+var hardYRange = 390;
     
     
 /* 
@@ -99,7 +99,16 @@ var format = d3.time.format("4/" + "%d" + " " + "%X");
    
     xValue = function(d) {return new Date(d.time1 * 1000);},
     xValue2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
-    length = function(d) {return new Date(d.time2 - d.time1);},
+    length = function(d) {
+      if((d.time2-d.time1) < 0) {
+        console.log('date error')
+        console.log(d.time2-d.time1)
+        console.log(d)
+        console.log(new Date(d.time2 - d.time1))
+      }
+      return (d.time2 - d.time1)
+
+      ;},
     //xScale = d3.scale.linear().range([0, width]), // value -> display
     xScale = d3.time.scale().range([0, width]), // value -> display
     wScale = d3.scale.linear().domain([0, 120245]).range([0, width]),
@@ -129,6 +138,7 @@ var toggleColor = (function(){
         currentColor = currentColor == "blue" ? "orange" : "blue";
         svg.selectAll(".line").style("fill", currentColor);
     }})();
+
 var color = d3.scale.category10();
 // add the graph canvas to the body of the webpage
 var svg = d3.select("#main").append("svg")
@@ -164,7 +174,7 @@ d3.csv("final.csv", function(error, data) {
      console.log(max)
       console.log(min)
  xScale.domain([min*1000, max*1000]);
-  yScale.domain([0,413]);
+  yScale.domain([0,hardYRange]);
   
   // x-axis
   svg.append("g")
@@ -191,7 +201,7 @@ d3.csv("final.csv", function(error, data) {
       //var rectWidth = length;
       //var rectWidth = length / 1000;
       var ll = 50;
-      var rectHeight = height/412;
+      var rectHeight = height/hardYRange;
      
     
   // draw dots
@@ -317,12 +327,13 @@ d3.csv("day1.csv", function(error, data) {
     d["time1"] = +d["time1"];
     d.time2 = +d.time2;
     d["time2"] = +d["time2"];
-});
+  });
   
-var max= d3.max(data, function(d) { return d.time2; })
-var min= d3.min(data, function(d) { return d.time1; })
-xScale1.domain([min*1000, max*1000]);
-yScale1.domain([0,413]);
+  var max = d3.max(data, function(d) { return d.time2; })
+  var min = d3.min(data, function(d) { return d.time1; })
+  xScale1.domain([min*1000, max*1000]);
+  yScale1.domain([0,hardYRange]);
+
   // x-axis
   chart1.append("g")
       .attr("class", "x axis")
@@ -346,7 +357,7 @@ yScale1.domain([0,413]);
       .style("text-anchor", "end")
       .text("Person");
       var ll = 50;
-      var rectHeight = height1/412;
+      var rectHeight = height1/hardYRange;
      
     
   // draw dots
@@ -371,13 +382,8 @@ yScale1.domain([0,413]);
       });
        });
     
-    
-    
-    
-    
-    
-  var hoverLineGroup1 = chart1.append("g")
-		.attr("class", "hover-line");
+var hoverLineGroup1 = chart1.append("g")
+	.attr("class", "hover-line");
     
 var hoverLine1 = hoverLineGroup1
 	.append("line")
@@ -464,7 +470,10 @@ d3.csv("day2.csv", function(error, data) {
     
   });
   // don't want dots overlapping axis, so add in buffer to data domain
-  yScale1.domain([0,413]);
+  var max = d3.max(data, function(d) { return d.time2; })
+  var min = d3.min(data, function(d) { return d.time1; })
+  xScale1.domain([min*1000, max*1000]);
+  yScale1.domain([0,hardYRange]);
   
   // x-axis
   chart2.append("g")
@@ -489,7 +498,7 @@ d3.csv("day2.csv", function(error, data) {
       .style("text-anchor", "end")
       .text("Person");
       var ll = 50;
-      var rectHeight = height1/412;
+      var rectHeight = height1/hardYRange;
      
     
   // draw dots
@@ -593,7 +602,10 @@ d3.csv("day3.csv", function(error, data) {
     
   });
   // don't want dots overlapping axis, so add in buffer to data domain
-  yScale1.domain([0,413]);
+  var max = d3.max(data, function(d) { return d.time2; })
+  var min = d3.min(data, function(d) { return d.time1; })
+  xScale1.domain([min*1000, max*1000]);
+  yScale1.domain([0,hardYRange]);
   
   // x-axis
   chart3.append("g")
@@ -620,7 +632,7 @@ d3.csv("day3.csv", function(error, data) {
       //var rectWidth = length;
       //var rectWidth = length / 1000;
       var ll = 50;
-      var rectHeight = height1/412;
+      var rectHeight = height1/hardYRange;
      
     
   // draw dots
@@ -684,7 +696,7 @@ var tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
 // load data
-d3.csv("final4.csv", function(error, data) {
+d3.csv("day4.csv", function(error, data) {
   // change string (from CSV) into number format
   data.forEach(function(d) {
     d.time1 = +d.time1;
@@ -693,7 +705,10 @@ d3.csv("final4.csv", function(error, data) {
     d["time2"] = +d["time2"];
   });
   // don't want dots overlapping axis, so add in buffer to data domain
-  yScale1.domain([0,413]);
+  var max = d3.max(data, function(d) { return d.time2; })
+  var min = d3.min(data, function(d) { return d.time1; })
+  xScale1.domain([min*1000, max*1000]);
+  yScale1.domain([0,hardYRange]);
   
   // x-axis
   chart4.append("g")
@@ -720,7 +735,7 @@ d3.csv("final4.csv", function(error, data) {
       //var rectWidth = length;
       //var rectWidth = length / 1000;
       var ll = 50;
-      var rectHeight = height1/412;
+      var rectHeight = height1/hardYRange;
     
   // draw dots
   chart4.selectAll(".line")
