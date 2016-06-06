@@ -85,7 +85,6 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
     height = 900 - margin.top - margin.bottom;*/
     
     
-
     
 /* 
  * value accessor - returns the value to encode for a given data object.
@@ -108,7 +107,6 @@ var format = d3.time.format("4/" + "%d" + " " + "%X");
     xLine = function(d) { return wScale(length(d));},
     xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(9).tickFormat(format),
     xScale.clamp(true);
-
 // setup y
 var yValue = function(d) { return d.index;}, // data -> value
     yScale = d3.scale.linear().range([height, 0]), // value -> display
@@ -133,7 +131,6 @@ var toggleColor = (function(){
     }})();
 var color = d3.scale.category10();
 // add the graph canvas to the body of the webpage
-
 var svg = d3.select("#main").append("svg")
     	.attr("width", width + margin.left + margin.right)
     	.attr("height", (1.25 * height) + margin.top + margin.bottom)
@@ -146,7 +143,6 @@ var svg = d3.select("#main").append("svg")
      	.attr('width', width)
 	.attr('height', height)
 	.attr('fill', 'white');
-
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -163,13 +159,11 @@ d3.csv("final.csv", function(error, data) {
     d["time2"] = +d["time2"];
     
   });
-
      var max= d3.max(data, function(d) { return d.time2; })
      var min= d3.min(data, function(d) { return d.time1; })
      console.log(max)
       console.log(min)
  xScale.domain([min*1000, max*1000]);
-
   yScale.domain([0,413]);
   
   // x-axis
@@ -220,7 +214,6 @@ d3.csv("final.csv", function(error, data) {
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
       })
-
       .on("mouseout", function(d) {
       hoverLineGroup.style("opacity", 1e-6);        
       tooltip.transition()
@@ -245,16 +238,13 @@ var y = d3.scale.linear().range([height, 0]);
 var hoverLineGroup = svg.append("g")
 					.attr("class", "hover-line");
     
-
 var hoverLine = hoverLineGroup
 	.append("line")
 		.attr("x1", 10).attr("x2", 10) 
 		.attr("y1", 0).attr("y2", height); 
-
 var hoverDate = hoverLineGroup.append('text')
    .attr("class", "hover-text")
    .attr('y', height+50);
-
 // Hide hover line by default.
 hoverLineGroup.style("opacity", 1e-6);
    
@@ -284,13 +274,11 @@ d3.select("#main").on("mouseover", function() {
   var x1Value = function(d) {return new Date(d.time1 * 1000);},
     x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
     length1 = function(d) {return new Date(d.time2 - d.time1);};
-
   var xScale1 = d3.time.scale().range([0, width1]), // value -> display
     wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
     xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
     xLine1 = function(d) { return wScale1(length(d));},
     xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
-
   xScale1.clamp(true);
     
 // setup y
@@ -335,7 +323,6 @@ var max= d3.max(data, function(d) { return d.time2; })
 var min= d3.min(data, function(d) { return d.time1; })
 xScale1.domain([min*1000, max*1000]);
 yScale1.domain([0,413]);
-
   // x-axis
   chart1.append("g")
       .attr("class", "x axis")
@@ -381,7 +368,6 @@ yScale1.domain([0,413]);
           tooltip.html("User: " + d.index + "<br/>" + "Online: " + toolFormat(xValue(d)) 
 	       + "<br/>" + "Offline: " + toolFormat(x1Value2(d)))
                .style("left", (d3.event.pageX + 5) + "px")
-
       });
        });
     
@@ -393,16 +379,13 @@ yScale1.domain([0,413]);
   var hoverLineGroup1 = chart1.append("g")
 		.attr("class", "hover-line");
     
-
 var hoverLine1 = hoverLineGroup1
 	.append("line")
 	.attr("x1", 10).attr("x2", 10) 
 	.attr("y1", 0).attr("y2", height1); 
-
 var hoverDate1 = hoverLineGroup1.append('text')
    .attr("class", "hover-text")
    .attr('y', height1+50);
-
 // Hide hover line by default.
 hoverLineGroup1.style("opacity", 1e-6);
    
@@ -442,7 +425,6 @@ var x1Value = function(d) {return new Date(d.time1 * 1000);},
   xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
   xLine1 = function(d) { return wScale1(length(d));},
   xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
-
 xScale1.clamp(true);
     
 // setup y
@@ -467,7 +449,6 @@ var chart2 = d3.select(".miniGraphs").append("svg")
   .attr("height", (1.25 * height1) + margin.top + margin.bottom)
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -482,7 +463,6 @@ d3.csv("day2.csv", function(error, data) {
     d["time2"] = +d["time2"];
     
   });
-
   // don't want dots overlapping axis, so add in buffer to data domain
   yScale1.domain([0,413]);
   
@@ -536,16 +516,13 @@ d3.csv("day2.csv", function(error, data) {
 var hoverLineGroup2 = chart2.append("g")
   .attr("class", "hover-line");
     
-
 var hoverLine2= hoverLineGroup2
 	.append("line")
 		.attr("x1", 10).attr("x2", 10) 
 		.attr("y1", 0).attr("y2", height1); 
-
 var hoverDate2 = hoverLineGroup2.append('text')
    .attr("class", "hover-text")
    .attr('y', height1+50);
-
 // Hide hover line by default.
 hoverLineGroup2.style("opacity", 1e-6);
    
@@ -563,7 +540,6 @@ d3.select("chart2").on("mouseover", function() {/* do something */}).on("mousemo
     hoverLineGroup2.style("opacity", 1e-6);
   });    
     
-
 ////////////////////////////////////////////////////////
 //////////////////GRAPH3////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -576,7 +552,6 @@ var x1Value = function(d) {return new Date(d.time1 * 1000);},
   xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
   xLine1 = function(d) { return wScale1(length(d));},
   xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
-
 xScale1.clamp(true);
     
 // console.log(xScale)
@@ -601,12 +576,10 @@ var chart3=d3.select(".miniGraphs").append("svg")
   .attr("height", (1.25 * height1) + margin.top + margin.bottom)
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
-
 // load data
 d3.csv("day3.csv", function(error, data) {
 // d3.csv("concat.csv", function(error, data) {
@@ -671,7 +644,6 @@ d3.csv("day3.csv", function(error, data) {
                .style("left", (d3.event.pageX + 5) + "px")
     });
 });  
-
 ////////////////////////////////////////////////////////
 //////////////////GRAPH4////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -684,7 +656,6 @@ var x1Value = function(d) {return new Date(d.time1 * 1000);},
   xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
   xLine1 = function(d) { return wScale1(length(d));},
   xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
-
 xScale1.clamp(true);
     
 // setup y
@@ -708,12 +679,10 @@ var chart4=d3.select(".miniGraphs").append("svg")
   .attr("height", (1.25 * height1) + margin.top + margin.bottom)
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
-
 // load data
 d3.csv("final4.csv", function(error, data) {
   // change string (from CSV) into number format
@@ -723,7 +692,6 @@ d3.csv("final4.csv", function(error, data) {
     d.time2 = +d.time2;
     d["time2"] = +d["time2"];
   });
-
   // don't want dots overlapping axis, so add in buffer to data domain
   yScale1.domain([0,413]);
   
@@ -738,7 +706,6 @@ d3.csv("final4.csv", function(error, data) {
       .attr("y", -6)
       .style("text-anchor", "end")
       .text("Time");
-
   // y-axis
   chart4.append("g")
       .attr("class", "y axis")
@@ -775,13 +742,10 @@ d3.csv("final4.csv", function(error, data) {
           .style("left", (d3.event.pageX + 5) + "px")
       });
     });
-
 function zoom() {
 	svg.attr("transform", "translate(" + d3.event.translate + ")scale("
 	+ d3.event.scale + ")");
 }
-
 </script>
 </body>
 </html>
-
