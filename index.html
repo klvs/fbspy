@@ -115,6 +115,7 @@ var format = d3.time.format("4/" + "%d" + " " + "%X");
     wScale = d3.scale.linear().domain([0, 120245]).range([0, width]),
     xMap = function(d) { return xScale(xValue(d));}, // data -> display
     xLine = function(d) { return wScale(length(d));},
+    group= function(d) {return d.group}
     xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(9).tickFormat(format),
     xScale.clamp(true);
 // setup y
@@ -132,13 +133,7 @@ var cValue = function(d) {
   }
   // return 'Ralston Purina';
 }
-var toggleColor = (function(){
-   var currentColor = "blue";
-    
-    return function(){
-        currentColor = currentColor == "blue" ? "orange" : "blue";
-        svg.selectAll(".line").style("fill", currentColor);
-    }})();
+
 
 var color = d3.scale.category10();
 // add the graph canvas to the body of the webpage
@@ -170,6 +165,15 @@ d3.csv("final.csv", function(error, data) {
     d["time2"] = +d["time2"];
     
   });
+      morning = data.filter(function(d) 
+{ 
+
+        if( d["group"] == "morning") 
+        { 
+            return ;
+        } 
+
+    })
      var max= d3.max(data, function(d) { return d.time2; })
      var min= d3.min(data, function(d) { return d.time1; })
      console.log(max)
@@ -214,6 +218,7 @@ d3.csv("final.csv", function(error, data) {
       .attr("height", rectHeight)
       .attr("x", xMap)
       .attr("y", yMap)
+      .attr("class", group)
       .style("fill", function(d) { return color(cValue(d));})
       .style("stroke-width", 0) 
       .on("mouseover", function(d) {
@@ -275,7 +280,14 @@ d3.select("#main").on("mouseover", function() {
 })  .on("mouseout", function() {
     hoverLineGroup.style("opacity", 1e-6);
   });    
+
+var toggleColor = (function(){
+   var currentColor = "blue";
     
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.morning').style("fill", currentColor);
+    }})();  
 ////////////////////////////////////////////////////////
 //////////////////GRAPH1////////////////////////////////
 ////////////////////////////////////////////////////////
