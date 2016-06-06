@@ -54,6 +54,25 @@ FF<!DOCTYPE html>
       </div>
     </div>
     <div id="main"></div>
+      <div id="option">
+    <input name="updateButton" 
+           type="button" 
+           value="Morning" 
+           onclick="morning()" />
+</div>
+
+      <div id="option">
+    <input name="updateButton" 
+           type="button" 
+           value="Night" 
+           onclick="night()" />
+</div>
+      <div id="option">
+    <input name="updateButton" 
+           type="button" 
+           value="Power" 
+           onclick="power()" />
+</div>
     <div class="miniGraphs"> </div> 
 
     <h4>Created by Ido Kinel, Alexander Roman, and Austin Provansal</h4>
@@ -165,15 +184,8 @@ d3.csv("final.csv", function(error, data) {
     d["time2"] = +d["time2"];
     
   });
-      morning = data.filter(function(d) 
-{ 
-
-        if( d["group"] == "morning") 
-        { 
-            return ;
-        } 
-
-    })
+    
+    
      var max= d3.max(data, function(d) { return d.time2; })
      var min= d3.min(data, function(d) { return d.time1; })
      console.log(max)
@@ -281,13 +293,28 @@ d3.select("#main").on("mouseover", function() {
     hoverLineGroup.style("opacity", 1e-6);
   });    
 
-var toggleColor = (function(){
+var morning = (function(){
    var currentColor = "blue";
     
     return function(){
         currentColor = currentColor == "blue" ? "orange" : "blue";
         svg.selectAll('.morning').style("fill", currentColor);
     }})();  
+    
+var night = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.night').style("fill", currentColor);
+    }})();      
+    var power = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.mid').style("fill", currentColor);
+    }})();      
 ////////////////////////////////////////////////////////
 //////////////////GRAPH1////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -323,10 +350,10 @@ var cValue1 = function(d) {
 var chart1 = d3.select(".miniGraphs").append("svg")
   .attr("width", width1 + margin.left + margin.right)
   .attr("height", (1.25 * height1) + margin.top + margin.bottom)
- .on("click", toggleColor) 
+
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-   .on("click", toggleColor); 
+ 
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -466,7 +493,9 @@ var cValue1 = function(d) {
 var chart2 = d3.select(".miniGraphs").append("svg")
   .attr("width", width1 + margin.left + margin.right)
   .attr("height", (1.25 * height1) + margin.top + margin.bottom)
+ 
   .append("g")
+
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
