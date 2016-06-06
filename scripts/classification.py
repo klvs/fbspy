@@ -55,6 +55,8 @@ for line in lines:
 
 	# print(str(difference) + ' = ' + str(time2) + ' - ' + str(time1))
 	if user != index:
+		if user == (index+1):
+			print(str(user) + ' ' + str(index))
 		with open('./classifications.csv', 'a') as f:
 			f.write(str(user) + ',' + str(total) + ',' 
 				+ str(totalNight1) + ',' 
@@ -79,6 +81,19 @@ for line in lines:
 		user = index
 
 	total = total + difference
+
+	# if(index == 375):
+	# 	with open('./classifications.csv', 'a') as f:
+	# 		f.write(str(user) + ',' + str(total) + ',' 
+	# 			+ str(totalNight1) + ',' 
+	# 			+ str(totalMorning1) + ',' 
+	# 			+ str(totalNight2) + ',' 
+	# 			+ str(totalMorning2) + ',' 
+	# 			+ str(totalNight3) + ',' 
+	# 			+ str(totalMorning3) + ',' 
+	# 			+ str(totalNight4) + ',' 
+	# 			+ str(totalMorning4)
+	# 			+ '\n')
 
 # # calculate total time morning 6am - 12pm
 # for line in lines:
