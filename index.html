@@ -124,6 +124,13 @@ var cValue = function(d) {
   }
   // return 'Ralston Purina';
 }
+var toggleColor = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll(".line").style("fill", currentColor);
+    }})();
 var color = d3.scale.category10();
 // add the graph canvas to the body of the webpage
 
@@ -305,9 +312,10 @@ var cValue1 = function(d) {
 var chart1 = d3.select(".miniGraphs").append("svg")
   .attr("width", width1 + margin.left + margin.right)
   .attr("height", (1.25 * height1) + margin.top + margin.bottom)
+ .on("click", toggleColor) 
   .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+   .on("click", toggleColor); 
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
