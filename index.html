@@ -50,7 +50,7 @@ FF<!DOCTYPE html>
   <br>
     <div class="row">
       <div class="col-lg-12">
-          <h1>Does Facebook Know When We Sleep?</h1>
+          <h1>Facebook Activity Patterns</h1>
       </div>
     </div>
     <div id="main"></div>
@@ -112,7 +112,9 @@ var hardYRange = 390;
  * axis - sets up axis
  */ 
 // setup x 
-var format = d3.time.format("4/" + "%d" + " " + "%X");
+//var format = d3.time.format("4/" + "%d" + " " + "%X");
+var mainFormat = d3.time.format("%m" + "/" + "%d" + " " + "%I" + " " + "%p");
+    miniFormat = d3.time.format("%I" + " " + "%p");
     toolFormat = d3.time.format("%X");
     
    
@@ -132,7 +134,7 @@ var format = d3.time.format("4/" + "%d" + " " + "%X");
     xMap = function(d) { return xScale(xValue(d));}, // data -> display
     xLine = function(d) { return wScale(length(d));},
     group= function(d) {return d.group}
-    xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(9).tickFormat(format),
+    xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(9).tickFormat(mainFormat),
     xScale.clamp(true);
 // setup y
 var yValue = function(d) { return d.index;}, // data -> value
@@ -157,10 +159,7 @@ var svg = d3.select("#main").append("svg")
     	.attr("width", width + margin.left + margin.right)
     	.attr("height", (1.25 * height) + margin.top + margin.bottom)
   	// .append("g")
-    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-    	.append("g")
-     	.call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
-     	.append("g");
+    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
      svg.append('svg:rect')
      	.attr('width', width)
 	.attr('height', height)
@@ -314,8 +313,8 @@ var night = (function(){
 ////////////////////////////////////////////////////////
 //////////////////GRAPH1////////////////////////////////
 ////////////////////////////////////////////////////////
-  var width1=250;
-  var height1=600;
+  var width1=200;
+  var height1=400;
   
   var x1Value = function(d) {return new Date(d.time1 * 1000);},
     x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
@@ -324,14 +323,15 @@ var night = (function(){
     wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
     xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
     xLine1 = function(d) { return wScale1(length(d));},
-    xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
+    xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(miniFormat);
   xScale1.clamp(true);
     
 // setup y
 var yValue1 = function(d) { return d.index;}, // data -> value
     yScale1 = d3.scale.linear().range([height1, 0]), // value -> display
     yMap1 = function(d) { return yScale1(yValue1(d));}, // data -> display
-    yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
+    yAxis1 = d3.svg.axis().scale(yScale1).ticks(0).orient("left");
+    //.tickValues(yScale.domain())
 // setup fill color
 var cValue1 = function(d) { 
   if(d.status == '3'){
@@ -348,7 +348,13 @@ var chart1 = d3.select(".miniGraphs").append("svg")
   .attr("height", (1.25 * height1) + margin.top + margin.bottom)
 
   .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+chart1.append('svg:rect')
+     	.attr('width', width1)
+	.attr('height', height1)
+	.attr('fill', 'white');
+     
  
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
@@ -394,7 +400,9 @@ d3.csv("day1.csv", function(error, data) {
       .text("Person");
       var ll = 50;
       var rectHeight = height1/hardYRange;
-     
+    
+    
+    
     
   // draw dots
   chart1.selectAll(".line")
@@ -406,7 +414,8 @@ d3.csv("day1.csv", function(error, data) {
       .attr("x", xMap1)
       .attr("y", yMap1)
       .style("fill", function(d) { return color(cValue(d));})
-      .style("stroke-width", 0) 
+      .style("stroke-width", 0.2)
+      .style("stroke", "blue")
       .on("mouseover", function(d) {
        
       tooltip.transition()
@@ -466,7 +475,7 @@ var x1Value = function(d) {return new Date(d.time1 * 1000);},
   wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
   xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
   xLine1 = function(d) { return wScale1(length(d));},
-  xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
+  xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(miniFormat);
 xScale1.clamp(true);
     
 // setup y
@@ -493,6 +502,11 @@ var chart2 = d3.select(".miniGraphs").append("svg")
   .append("g")
 
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+chart2.append('svg:rect')
+     	.attr('width', width1)
+	.attr('height', height1)
+	.attr('fill', 'white');
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -549,7 +563,8 @@ d3.csv("day2.csv", function(error, data) {
       .attr("x", xMap1)
       .attr("y", yMap1)
       .style("fill", function(d) { return color(cValue(d));})
-      .style("stroke-width", 0) 
+      .style("stroke-width", 0.2)
+      .style("stroke", "blue")
       .on("mouseover", function(d) {
         tooltip.transition()
          .duration(200)
@@ -598,7 +613,7 @@ var x1Value = function(d) {return new Date(d.time1 * 1000);},
   wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
   xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
   xLine1 = function(d) { return wScale1(length(d));},
-  xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
+  xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(miniFormat);
 xScale1.clamp(true);
     
 
@@ -623,6 +638,11 @@ var chart3=d3.select(".miniGraphs").append("svg")
   .attr("height", (1.25 * height1) + margin.top + margin.bottom)
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    chart3.append('svg:rect')
+     	.attr('width', width1)
+	.attr('height', height1)
+	.attr('fill', 'white');
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
@@ -683,7 +703,8 @@ d3.csv("day3.csv", function(error, data) {
       .attr("x", xMap1)
       .attr("y", yMap1)
       .style("fill", function(d) { return color(cValue(d));})
-      .style("stroke-width", 0) 
+      .style("stroke-width", 0.2)
+      .style("stroke", "blue")
       .on("mouseover", function(d) {
        
       tooltip.transition()
@@ -705,7 +726,7 @@ var x1Value = function(d) {return new Date(d.time1 * 1000);},
   wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
   xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
   xLine1 = function(d) { return wScale1(length(d));},
-  xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(format);
+  xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(miniFormat);
 xScale1.clamp(true);
     
 // setup y
@@ -729,6 +750,11 @@ var chart4=d3.select(".miniGraphs").append("svg")
   .attr("height", (1.25 * height1) + margin.top + margin.bottom)
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+chart4.append('svg:rect')
+     	.attr('width', width1)
+	.attr('height', height1)
+	.attr('fill', 'white');
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
@@ -785,7 +811,8 @@ d3.csv("day4.csv", function(error, data) {
       .attr("x", xMap1)
       .attr("y", yMap1)
       .style("fill", function(d) { return color(cValue(d));})
-      .style("stroke-width", 0) 
+      .style("stroke-width", 0.2)
+      .style("stroke", "blue")
       .on("mouseover", function(d) {
         tooltip.transition()
           .duration(200)
@@ -795,10 +822,10 @@ d3.csv("day4.csv", function(error, data) {
           .style("left", (d3.event.pageX + 5) + "px")
       });
     });
-function zoom() {
+/*function zoom() {
 	svg.attr("transform", "translate(" + d3.event.translate + ")scale("
 	+ d3.event.scale + ")");
-}
+}*/
 </script>
 </body>
 </html>
