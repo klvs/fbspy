@@ -43,65 +43,90 @@ FF<!DOCTYPE html>
     </div><!--/.nav-collapse -->
   </div>
 </nav>
-  <div class="container">
+<div class="container">
   <br>
   <br>
   <br>
   <br>
-    <div class="row">
-      <div class="col-lg-12">
-          <h1>Facebook Activity Patterns</h1>
-      </div>
+  <div class="row">
+    <div class="col-lg-12">
+        <h1>Facebook Activity Patterns</h1>
     </div>
-    <div id="main"></div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <button type="button" onclick="" class="btn btn-success">Day 1 AM</button>
+      <button type="button" onclick="" class="btn btn-success">Day 1 PM</button>
+      <button type="button" onclick="" class="btn btn-success">Day 2 AM</button>
+      <button type="button" onclick="" class="btn btn-success">Day 2 PM</button>
+      <button type="button" onclick="" class="btn btn-success">Day 3 AM</button>
+      <button type="button" onclick="" class="btn btn-success">Day 3 PM</button>
+      <button type="button" onclick="" class="btn btn-success">Day 4 AM</button>
+      <button type="button" onclick="" class="btn btn-success">Day 4 PM</button>
+      <button type="button" onclick="" class="btn btn-clear">Clear</button>
+      <br>
+      <br>
+    </div>
+  </div>
+  <div class="">
+    <div id="main" class="">
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+<!--     <div>
       <div id="optionMorning">
-    <input name="updateButton" 
-           type="button" 
-           value="Morning" 
-           onclick="d1()" />
-</div>
+      <input name="updateButton" 
+      type="button" 
+      value="Morning" 
+      onclick="d1()" />
+      </div>
 
       <div id="optionNight">
-    <input name="updateButton" 
-           type="button" 
-           value="Night" 
-           onclick="night()" />
-</div>
+      <input name="updateButton" 
+      type="button" 
+      value="Night" 
+      onclick="night()" />
+      </div>
       <div id="optionPower">
-    <input name="updateButton" 
-           type="button" 
-           value="Power" 
-           onclick="power()" />
-</div>
-    <div class="miniGraph1"> </div> 
-    <div class="miniGraph2"> </div> 
-    <div class="miniGraph3"> </div> 
-    <div class="miniGraph4"> </div> 
-    <h4>Created by Ido Kinel, Alexander Roman, and Austin Provansal</h4>
-    <h4>Description: Facebook user activity, graphed and analyzed</h4>
-      
-    <br><br><br><br><br><br><br><br><br><br>
+      <input name="updateButton" 
+      type="button" 
+      value="Power" 
+      onclick="test()" />
+      </div>
 
-    <h4>Files Submitted:</h4>
-
-    <ul>
-      <li><a href=index.html>index.html</a></li>
-      <li><a href="final.csv">final.csv</a></li>
-        <li><a href="day1.csv">day1.csv</a></li>
-        <li><a href="day2.csv">day2.csv</a></li>
-        <li><a href="day3.csv">day3.csv</a></li>
-        <li><a href="day4.csv">day4.csv</a></li>
-        <li><a href="main.css">main.css</a></li>
-    
-    </ul>
-
-    <h4> Sources: </h4>
-    <ul>
-      <li><a href="https://github.com/klvs/fbspy">Our GitHub repo</a></li>
-      <li>bl.ocks.org/mbostock/3892919</li>
-    </ul>
+    </div> -->
   </div>
+  <div class="miniGraph1"> </div> 
+  <div class="miniGraph2"> </div> 
+  <div class="miniGraph3"> </div> 
+  <div class="miniGraph4"> </div> 
+  <h4>Created by Ido Kinel, Alexander Roman, and Austin Provansal</h4>
+  <h4>Description: Facebook user activity, graphed and analyzed</h4>
     
+  <br><br><br><br><br><br><br><br><br><br>
+
+  <h4>Files Submitted:</h4>
+
+  <ul>
+    <li><a href=index.html>index.html</a></li>
+    <li><a href="final.csv">final.csv</a></li>
+      <li><a href="day1.csv">day1.csv</a></li>
+      <li><a href="day2.csv">day2.csv</a></li>
+      <li><a href="day3.csv">day3.csv</a></li>
+      <li><a href="day4.csv">day4.csv</a></li>
+      <li><a href="main.css">main.css</a></li>
+  
+  </ul>
+
+  <h4> Sources: </h4>
+  <ul>
+    <li><a href="https://github.com/klvs/fbspy">Our GitHub repo</a></li>
+    <li>bl.ocks.org/mbostock/3892919</li>
+  </ul>
+</div>
+  
     
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
@@ -160,7 +185,6 @@ var cValue = function(d) {
   } else {
     return '#fff';
   }
-  // return 'Ralston Purina';
 }
 
 
@@ -226,18 +250,71 @@ d3.csv("final2.csv", function(error, data) {
       var ll = 50;
       var rectHeight = height/hardYRange;
      
-    
+    function resolveCategories(data) {
+      // index,time1,time2,d1t,d2t,d33t,d4t,n1t,n2t,n3t,n4t
+      console.log('resolveCategories')
+      console.log(typeof data.d1t)
+      console.log(data)
+      return " "
+    }
+
+    function parseBool(b) {
+      if(b==="0"){
+        return false;
+      } 
+      if(b==="1"){
+        return true;
+      }
+    }
   // draw dots
   svg.selectAll(".line")
       .data(data)
       .enter().append("rect")
-      .attr("class", "line")
+      // .attr("class", "line")
       .attr("width", xLine)
       .attr("height", rectHeight)
       .attr("x", xMap)
       .attr("y", yMap)
       .attr("class", group)
       .style("fill", "blue")
+      .attr("class", function(d){
+        var classStr = "line "
+          var d1t = parseBool(d.d1t)
+          var d2t = parseBool(d.d2t)
+          var d33t = parseBool(d.d33t)
+          var d4t = parseBool(d.d4t)
+          var n1t = parseBool(d.n1t)
+          var n2t = parseBool(d.n2t)
+          var n3t = parseBool(d.n3t)
+          var n4t = parseBool(d.n4t)
+
+          if(d1t) {
+            classStr = classStr + ' ' + 'd1t';
+          }
+          if(d2t) {
+            classStr = classStr + ' ' + 'd2t';
+          }
+          if(d33t) {
+            classStr = classStr + ' ' + 'd33t';
+          }
+          if(d4t) {
+            classStr = classStr + ' ' + 'd4t';
+          }
+          if(n1t) {
+            classStr = classStr + ' ' + 'n1t';
+          }
+          if(n2t) {
+            classStr = classStr + ' ' + 'n2t';
+          }
+          if(n3t) {
+            classStr = classStr + ' ' + 'n3t';
+          }
+          if(n4t) {
+            classStr = classStr + ' ' + 'n4t';
+          }
+          // console.log(classStr);
+        return classStr;
+      })
       .style("stroke-width", 0) 
       .on("mouseover", function(d) {
           tooltip.transition()
@@ -907,12 +984,30 @@ d3.select(".miniGraph4").on("mouseover", function() {/* do something*/ })
         chart4.selectAll('.d1').style("fill", currentColor);
     }})();  
     
+// var test = (function(){
+//   console.log('test')
+//    var currentColor = "blue";
+    
+//     return function(){
+//         currentColor = currentColor == "blue" ? "orange" : "blue";
+//         svg.selectAll('.n1t').style("fill", currentColor);
+//          chart1.selectAll('.n1t').style("fill", currentColor);
+//         chart2.selectAll('.n1t').style("fill", currentColor);
+//         chart3.selectAll('.n1t').style("fill", currentColor);
+//         chart4.selectAll('.n1t').style("fill", currentColor);
+//     }})();    
+
+function test() {
+  // console.log('test');
+  svg.selectAll('.n1t').style("fill", 'red');
+}
+
 var n1 = (function(){
    var currentColor = "blue";
     
     return function(){
         currentColor = currentColor == "blue" ? "orange" : "blue";
-        svg.selectAll('.night').style("fill", currentColor);
+        svg.selectAll('.n').style("fill", currentColor);
          chart1.selectAll('.night').style("fill", currentColor);
         chart2.selectAll('.night').style("fill", currentColor);
         chart3.selectAll('.night').style("fill", currentColor);
@@ -985,11 +1080,7 @@ var n1 = (function(){
         chart3.selectAll('.n4').style("fill", currentColor);
         chart4.selectAll('.n4').style("fill", currentColor);
     }})();   
-function zoom() {
 
-	svg.attr("transform", "translate(" + d3.event.translate + ")scale("
-	+ d3.event.scale + ")");
-}
 </script>
 </body>
 </html>
