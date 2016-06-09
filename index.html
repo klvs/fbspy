@@ -269,7 +269,8 @@ var hoverLine = hoverLineGroup
 		.attr("y1", 0).attr("y2", height); 
 var hoverDate = hoverLineGroup.append('text')
    .attr("class", "hover-text")
-   .attr('y', height+50);
+   .attr('y', height+40);
+
 // Hide hover line by default.
 hoverLineGroup.style("opacity", 1e-6);
    
@@ -282,7 +283,7 @@ d3.select("#main").on("mouseover", function() {
   var graph_x = xScale.invert(mouse_x);
   var format = d3.time.format('%e %b');
   hoverDate.text(graph_x);
-  hoverDate.attr('x', mouse_x);
+  hoverDate.attr('x', mouse_x-100);
   hoverLine.attr("x1", mouse_x).attr("x2", mouse_x)
   hoverLineGroup.style("opacity", 1);
     
@@ -452,7 +453,7 @@ d3.select(".miniGraph1").on("mouseover", function() {/* do something */})
     var format = d3.time.format('%e %b');
     //format.parse(graph_x)
     hoverDate1.text(graph_x1);
-    hoverDate1.attr('x', mouse_x1);
+    hoverDate1.attr('x', mouse_x1-100);
    
     hoverLine1.attr("x1", mouse_x1).attr("x2", mouse_x1)
     hoverLineGroup1.style("opacity", 1);
@@ -598,7 +599,7 @@ d3.select(".miniGraph2").on("mouseover", function() {/* do something */})
     var format = d3.time.format('%e %b');
     //format.parse(graph_x)
     hoverDate2.text(graph_x2);
-    hoverDate2.attr('x', mouse_x2);
+    hoverDate2.attr('x', mouse_x2-100);
    
     hoverLine2.attr("x1", mouse_x2).attr("x2", mouse_x2)
     hoverLineGroup2.style("opacity", 1);
@@ -745,7 +746,7 @@ d3.select(".miniGraph3").on("mouseover", function() {/* do something */})
     var format = d3.time.format('%e %b');
     //format.parse(graph_x)
     hoverDate3.text(graph_x3);
-    hoverDate3.attr('x', mouse_x3);
+    hoverDate3.attr('x', mouse_x3-100);
    
     hoverLine3.attr("x1", mouse_x3).attr("x2", mouse_x3)
     hoverLineGroup3.style("opacity", 1);
@@ -890,7 +891,7 @@ d3.select(".miniGraph4").on("mouseover", function() {/* do something*/ })
     var format = d3.time.format('%e %b');
     //format.parse(graph_x)
     hoverDate4.text(graph_x4);
-    hoverDate4.attr('x', mouse_x4);
+    hoverDate4.attr('x', mouse_x4-100);
    
     hoverLine4.attr("x1", mouse_x4).attr("x2", mouse_x4)
     hoverLineGroup4.style("opacity", 1);
