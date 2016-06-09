@@ -29,24 +29,24 @@ body {
 .miniGraph1{
  display:inline-block; 
 position: absolute;
-top: 500;
+top: 450;
 left: -25;
 }
 .miniGraph2{
  display:inline-block; 
 position: absolute;
-top: 500;
+top: 450;
 left: 200;
 }.miniGraph3{
   display:inline-block;
 position: absolute;
-    top: 500;
+    top: 450;
     left: 425;
 
 }.miniGraph4{
   display:inline-block;
     position: absolute;
-    top: 500;
+    top: 450;
     left: 650;
 }
 
@@ -93,3 +93,22 @@ position: absolute;
       fill: none;
       stroke-width: 1px;
   }
+
+#optionNight  {
+    position: absolute;
+    top: 600;
+    left: -40;
+}
+
+#optionMorning {
+    position: absolute;
+    top: 550;
+    left: -40;
+}
+
+#optionPower {
+    position: absolute;
+    top: 650;
+    left: -40;
+}
+
