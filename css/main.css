@@ -22,8 +22,15 @@ body {
 .container{
   position: relative;
 }
-.miniGraphs{
-  
+.miniGraph1{
+ display:inline-block; 
+}
+.miniGraph2{
+ display:inline-block; 
+}.miniGraph3{
+  display:inline-block;
+}.miniGraph4{
+  display:inline-block;
 }
 .svg { 
   pointer-events: all;
