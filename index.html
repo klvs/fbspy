@@ -58,7 +58,7 @@ FF<!DOCTYPE html>
     <input name="updateButton" 
            type="button" 
            value="Morning" 
-           onclick="morning()" />
+           onclick="d1()" />
 </div>
 
       <div id="optionNight">
@@ -237,7 +237,7 @@ d3.csv("final.csv", function(error, data) {
       .attr("x", xMap)
       .attr("y", yMap)
       .attr("class", group)
-      .style("fill", function(d) { return color(cValue(d));})
+      .style("fill", "blue")
       .style("stroke-width", 0) 
       .on("mouseover", function(d) {
           tooltip.transition()
@@ -300,28 +300,7 @@ d3.select("#main").on("mouseover", function() {
     hoverLineGroup.style("opacity", 1e-6);
   });    
 
-var morning = (function(){
-   var currentColor = "blue";
-    
-    return function(){
-        currentColor = currentColor == "blue" ? "orange" : "blue";
-        svg.selectAll('.morning').style("fill", currentColor);
-    }})();  
-    
-var night = (function(){
-   var currentColor = "blue";
-    
-    return function(){
-        currentColor = currentColor == "blue" ? "orange" : "blue";
-        svg.selectAll('.night').style("fill", currentColor);
-    }})();      
-    var power = (function(){
-   var currentColor = "blue";
-    
-    return function(){
-        currentColor = currentColor == "blue" ? "orange" : "blue";
-        svg.selectAll('.mid').style("fill", currentColor);
-    }})();      
+
 ////////////////////////////////////////////////////////
 //////////////////GRAPH1////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -330,7 +309,8 @@ var night = (function(){
   
   var x1Value = function(d) {return new Date(d.time1 * 1000);},
     x1Value2 = function(d) {return new Date(d.time2 * 1000);},// data -> value
-    length1 = function(d) {return new Date(Math.abs(d.time2 - d.time1));};
+     group1= function(d) {return d.group}
+      length1 = function(d) {return new Date(Math.abs(d.time2 - d.time1));};
   var xScale1 = d3.time.scale().range([0, width1]), // value -> display
     wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
     xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
@@ -424,9 +404,10 @@ d3.csv("day1.csv", function(error, data) {
       .attr("height", rectHeight)
       .attr("x", xMap1)
       .attr("y", yMap1)
-      .style("fill", function(d) { return color(cValue(d));})
+       .attr("class", group1)
+      //.style("fill", function(d) { return color(cValue(d));})
       .style("stroke-width", 0.2)
-      .style("stroke", "blue")
+     // .style("stroke", "blue")
       .on("mouseover", function(d) {
        
       tooltip.transition()
@@ -486,6 +467,7 @@ var x1Value = function(d) {return new Date(d.time1 * 1000);},
   wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
   xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
   xLine1 = function(d) { return wScale1(length(d));},
+      group2= function(d) {return d.group}
   xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(miniFormat);
 xScale1.clamp(true);
     
@@ -571,9 +553,10 @@ d3.csv("day2.csv", function(error, data) {
       .attr("height", rectHeight)
       .attr("x", xMap1)
       .attr("y", yMap1)
+      .attr("class", group2)
       .style("fill", function(d) { return color(cValue(d));})
       .style("stroke-width", 0.2)
-      .style("stroke", "blue")
+    //  .style("stroke", "blue")
       .on("mouseover", function(d) {
         tooltip.transition()
          .duration(200)
@@ -630,6 +613,7 @@ var x1Value = function(d) {return new Date(d.time1 * 1000);},
   wScale1 = d3.scale.linear().domain([0, 120245]).range([0, width1]),
   xMap1 = function(d) { return xScale1(x1Value(d));}, // data -> display
   xLine1 = function(d) { return wScale1(length(d));},
+    group3= function(d) {return d.group}    
   xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom").ticks(3).tickFormat(miniFormat);
 xScale1.clamp(true);
     
@@ -717,9 +701,10 @@ d3.csv("day3.csv", function(error, data) {
       .attr("height", rectHeight)
       .attr("x", xMap1)
       .attr("y", yMap1)
-      .style("fill", function(d) { return color(cValue(d));})
-      .style("stroke-width", 0.2)
-      .style("stroke", "blue")
+       .attr("class", group3)
+     .style("fill", function(d) { return color(cValue(d));})
+     .style("stroke-width", 0.2)
+     // .style("stroke", "blue")
       .on("mouseover", function(d) {
        
       tooltip.transition()
@@ -784,6 +769,7 @@ xScale1.clamp(true);
 var yValue1 = function(d) { return d.index;}, // data -> value
     yScale1 = d3.scale.linear().range([height1, 0]), // value -> display
     yMap1 = function(d) { return yScale1(yValue1(d));}, // data -> display
+      group4= function(d) {return d.group}
     yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
 // setup fill color
 var cValue1 = function(d) { 
@@ -860,9 +846,10 @@ d3.csv("day4.csv", function(error, data) {
       .attr("height", rectHeight)
       .attr("x", xMap1)
       .attr("y", yMap1)
-      .style("fill", function(d) { return color(cValue(d));})
-      .style("stroke-width", 0.2)
-      .style("stroke", "blue")
+    .attr("class", group4)
+  .style("fill", "blue")
+      .style("stroke-width", 0)
+      //.style("stroke", "blue")
       .on("mouseover", function(d) {
         tooltip.transition()
           .duration(200)
@@ -908,7 +895,96 @@ d3.select(".miniGraph4").on("mouseover", function() {/* do something*/ })
     hoverLineGroup4.style("opacity", 1e-6);
   });    
     
+ var d1 = (function(){
+   var currentColor = "blue";
     
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.d1').style("fill", currentColor);
+        chart1.selectAll('.d1').style("fill", currentColor);
+        chart2.selectAll('.d1').style("fill", currentColor);
+        chart3.selectAll('.d1').style("fill", currentColor);
+        chart4.selectAll('.d1').style("fill", currentColor);
+    }})();  
+    
+var n1 = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.night').style("fill", currentColor);
+         chart1.selectAll('.night').style("fill", currentColor);
+        chart2.selectAll('.night').style("fill", currentColor);
+        chart3.selectAll('.night').style("fill", currentColor);
+        chart4.selectAll('.night').style("fill", currentColor);
+    }})();      
+    var d2 = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.d2').style("fill", currentColor);
+         chart1.selectAll('.d2').style("fill", currentColor);
+        chart2.selectAll('.d2').style("fill", currentColor);
+        chart3.selectAll('.d2').style("fill", currentColor);
+        chart4.selectAll('.d2').style("fill", currentColor);
+    }})();
+        var n2 = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.n2').style("fill", currentColor);
+         chart1.selectAll('.n2').style("fill", currentColor);
+        chart2.selectAll('.n2').style("fill", currentColor);
+        chart3.selectAll('.n2').style("fill", currentColor);
+        chart4.selectAll('.n2').style("fill", currentColor);
+    }})();   
+     
+        var d33 = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.d3').style("fill", currentColor);
+         chart1.selectAll('.d3').style("fill", currentColor);
+        chart2.selectAll('.d3').style("fill", currentColor);
+        chart3.selectAll('.d3').style("fill", currentColor);
+        chart4.selectAll('.d3').style("fill", currentColor);
+    }})();   
+       var n3 = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.n3').style("fill", currentColor);
+         chart1.selectAll('.n3').style("fill", currentColor);
+        chart2.selectAll('.n3').style("fill", currentColor);
+        chart3.selectAll('.n3').style("fill", currentColor);
+        chart4.selectAll('.n3').style("fill", currentColor);
+    }})();   
+        var d4 = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.d4').style("fill", currentColor);
+         chart1.selectAll('.d4').style("fill", currentColor);
+        chart2.selectAll('.d4').style("fill", currentColor);
+        chart3.selectAll('.d4').style("fill", currentColor);
+        chart4.selectAll('.d4').style("fill", currentColor);
+    }})();   
+     var n4 = (function(){
+   var currentColor = "blue";
+    
+    return function(){
+        currentColor = currentColor == "blue" ? "orange" : "blue";
+        svg.selectAll('.n4').style("fill", currentColor);
+         chart1.selectAll('.n4').style("fill", currentColor);
+        chart2.selectAll('.n4').style("fill", currentColor);
+        chart3.selectAll('.n4').style("fill", currentColor);
+        chart4.selectAll('.n4').style("fill", currentColor);
+    }})();   
 function zoom() {
 
 	svg.attr("transform", "translate(" + d3.event.translate + ")scale("

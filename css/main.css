@@ -9,7 +9,8 @@ body {
   shape-rendering: crispEdges;
 }
 .dot {
-  stroke: #000;
+  stroke: blue;
+    fill: blue;
 }
 .line {
   /*stroke: #bbb;
@@ -31,6 +32,7 @@ body {
 position: absolute;
 top: 450;
 left: -25;
+
 }
 .miniGraph2{
  display:inline-block; 
@@ -60,30 +62,13 @@ position: absolute;
     display: none;
 }
 .svg { 
-  pointer-events: all;
   background-color: antiquewhite;
 }
 .hover-line { 
   stroke: black;  
   stroke-width: .8px;
 }
-.zoomOut {
-      fill: #66a;
-      cursor: pointer;
-  }
-  .zoomOutText {
-      pointer-events: none;
-      fill : #ccc;
-  }
-  .zoomOverlay {
-      pointer-events: all;
-      fill:none;
-  }
-  .band {
-      fill : none;
-      stroke-width: 1px;
-      stroke: red;
-  }
+
 .axis path, .axis line {
       fill: none;
       stroke: #000;
@@ -93,7 +78,10 @@ position: absolute;
       fill: none;
       stroke-width: 1px;
   }
-
+.group1.line {
+    stroke: blue;  
+    fill:blue;
+}
 #optionNight  {
     position: absolute;
     top: 600;
