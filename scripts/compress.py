@@ -1,6 +1,8 @@
 import os
-
-with open(os.getcwd()+'/raw.csv', 'r') as f:
+import sys
+# print(sys.arv)
+# sys.exit(0)
+with open(os.getcwd()+ sys.argv[1], 'r') as f:
 	lines = f.readlines()
 
 legend = lines.pop(0) # pop first (legend)

@@ -43,14 +43,14 @@ FF<!DOCTYPE html>
     </div><!--/.nav-collapse -->
   </div>
 </nav>
-  <div class="container">
+  <div class="containerResponsive">
   <br>
   <br>
   <br>
   <br>
     <div class="row">
       <div class="col-lg-12">
-          <h1>Does Facebook Know When We Sleep?</h1>
+          <h1 class="text-center">Does Facebook Know When We Sleep?</h1>
       </div>
     </div>
     <div id="main"></div>
@@ -320,7 +320,7 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 // load data
-d3.csv("day1.csv", function(error, data) {
+d3.csv("day1test.csv", function(error, data) {
   // change string (from CSV) into number format
   data.forEach(function(d) {
     //d = (new Date(d));

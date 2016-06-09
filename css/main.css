@@ -19,9 +19,9 @@ body {
   height: 28px;
   pointer-events: none;
 }
-.container{
+/*.container{
   position: relative;
-}
+}*/
 .miniGraphs{
   
 }
@@ -33,28 +33,36 @@ body {
   stroke-width: .8px;
 }
 .zoomOut {
-      fill: #66a;
-      cursor: pointer;
-  }
-  .zoomOutText {
-      pointer-events: none;
-      fill : #ccc;
-  }
-  .zoomOverlay {
-      pointer-events: all;
-      fill:none;
-  }
-  .band {
-      fill : none;
-      stroke-width: 1px;
-      stroke: red;
-  }
+    fill: #66a;
+    cursor: pointer;
+}
+.zoomOutText {
+    pointer-events: none;
+    fill : #ccc;
+}
+.zoomOverlay {
+    pointer-events: all;
+    fill:none;
+}
+.band {
+    fill : none;
+    stroke-width: 1px;
+    stroke: red;
+}
 .axis path, .axis line {
-      fill: none;
-      stroke: #000;
-      shape-rendering: crispEdges;
-  }
-  path.line {
-      fill: none;
-      stroke-width: 1px;
-  }
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+path.line {
+    fill: none;
+    stroke-width: 1px;
+}
+
+.containerResponsive {
+    width: 90%;
+}
+
+#main {
+  text-align: center;
+}

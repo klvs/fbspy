@@ -1,7 +1,7 @@
 # python ./scripts/format.py &&
-python ./scripts/compress.py && 
+python ./scripts/compress.py $1 && 
 python ./scripts/removeUID.py &&
-python ./scripts/fudgeIntervals.py $1 &&
+python ./scripts/fudgeIntervals.py $2 &&
 rm compressed.csv &&
 rm removed_uid.csv 
 # &&

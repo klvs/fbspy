@@ -26,15 +26,14 @@ lineList = []
 # calculate total time online
 for line in lines:
 	split = line.split(',')
-	index = int(split[0])
+	selectedUser = int(split[0])
 	time1 = int(split[1])
 	time2 = int(split[2])
 	difference = time2 - time1
 
-	# morning 1 6am - noon
+	# day 1
 	if time1 > 1464613200 and time2 < 1464656400:
 		totalMorning1 = totalMorning1 + difference
-	#night 1 noon - 6am
 	if time1 > 1464656400 and time2 < 1464699600:
 		totalNight1 = totalNight1 + difference
 	# day 2
@@ -54,9 +53,7 @@ for line in lines:
 		totalNight4 = totalNight4 + difference
 
 	# print(str(difference) + ' = ' + str(time2) + ' - ' + str(time1))
-	if user != index:
-		if user == (index+1):
-			print(str(user) + ' ' + str(index))
+	if user != selectedUser:
 		with open('./classifications.csv', 'a') as f:
 			f.write(str(user) + ',' + str(total) + ',' 
 				+ str(totalNight1) + ',' 
@@ -81,23 +78,3 @@ for line in lines:
 		user = index
 
 	total = total + difference
-
-	# if(index == 375):
-	# 	with open('./classifications.csv', 'a') as f:
-	# 		f.write(str(user) + ',' + str(total) + ',' 
-	# 			+ str(totalNight1) + ',' 
-	# 			+ str(totalMorning1) + ',' 
-	# 			+ str(totalNight2) + ',' 
-	# 			+ str(totalMorning2) + ',' 
-	# 			+ str(totalNight3) + ',' 
-	# 			+ str(totalMorning3) + ',' 
-	# 			+ str(totalNight4) + ',' 
-	# 			+ str(totalMorning4)
-	# 			+ '\n')
-
-# # calculate total time morning 6am - 12pm
-# for line in lines:
-# 	split = line.split(',')
-# 	index = int(split[0])
-# 	time1 = int(split[1])
-# 	time2 = int(split[2])
