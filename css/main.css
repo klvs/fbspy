@@ -36,6 +36,16 @@ body {
 }.miniGraph4{
   display:inline-block;
 }
+
+.miniGraph1 .y .tick {
+    display: none;
+}.miniGraph2 .y .tick {
+    display: none;
+}.miniGraph3 .y .tick {
+    display: none;
+}.miniGraph4 .y .tick {
+    display: none;
+}
 .svg { 
   pointer-events: all;
   background-color: antiquewhite;
