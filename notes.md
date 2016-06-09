@@ -50,12 +50,19 @@ morn4 1516.9191
 SELECT * FROM dump WHERE id IN (1,2,3) AND time BETWEEN 1464872400 AND 1464958800;
 
 # Series 1 
+<!-- SELECT * FROM dump 
+WHERE (time BETWEEN 1464613200 AND 1464699600)
+AND `index` IN (SELECT `index` FROM classifications_multiday WHERE totalNight1 > totalMorning1); -->
 SELECT * FROM dump 
 WHERE (time BETWEEN 1464613200 AND 1464699600)
-AND `index` IN (SELECT `index` FROM classifications_multiday WHERE totalNight1 > 1082.1932);
+AND `index` IN (SELECT `index` FROM classifications_multiday WHERE totalNight1 > totalMorning1 AND totalNight1 > 1082) LIMIT 195;
+
+<!-- SELECT * FROM dump 
+WHERE (time BETWEEN 1464613200 AND 1464699600)
+AND `index` IN (SELECT `index` FROM classifications_multiday WHERE totalMorning1 > 1419.6345); -->
 SELECT * FROM dump 
 WHERE (time BETWEEN 1464613200 AND 1464699600)
-AND `index` IN (SELECT `index` FROM classifications_multiday WHERE totalMorning1 > 1419.6345);
+AND `index` IN (SELECT `index` FROM classifications_multiday WHERE totalMorning1 > totalNight1 AND totalMorning1 > 1419.6345) LIMIT 195;
 
 # Series 2
 SELECT * FROM dump 
