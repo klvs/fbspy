@@ -405,7 +405,7 @@ d3.csv("day1.csv", function(error, data) {
       .attr("x", xMap1)
       .attr("y", yMap1)
        .attr("class", group1)
-      //.style("fill", function(d) { return color(cValue(d));})
+      .style("fill", "blue")
       .style("stroke-width", 0.2)
      // .style("stroke", "blue")
       .on("mouseover", function(d) {
@@ -847,8 +847,8 @@ d3.csv("day4.csv", function(error, data) {
       .attr("x", xMap1)
       .attr("y", yMap1)
     .attr("class", group4)
-  .style("fill", "blue")
-      .style("stroke-width", 0)
+      .style("stroke-width", .2)
+    .style("fill","blue")
       //.style("stroke", "blue")
       .on("mouseover", function(d) {
         tooltip.transition()
@@ -901,7 +901,7 @@ d3.select(".miniGraph4").on("mouseover", function() {/* do something*/ })
     return function(){
         currentColor = currentColor == "blue" ? "orange" : "blue";
         svg.selectAll('.d1').style("fill", currentColor);
-        chart1.selectAll('.d1').style("fill", currentColor);
+        chart1.selectAll('.d1').style("stroke", currentColor);
         chart2.selectAll('.d1').style("fill", currentColor);
         chart3.selectAll('.d1').style("fill", currentColor);
         chart4.selectAll('.d1').style("fill", currentColor);
