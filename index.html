@@ -4,7 +4,9 @@ FF<!DOCTYPE html>
   <!-- Bootstrap Core CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/main.css">
+
 </head>
+<script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
 <meta charset="utf-8">
 
 <!-- Example based on http://bl.ocks.org/mbostock/3887118 -->
@@ -55,15 +57,15 @@ FF<!DOCTYPE html>
   </div>
   <div class="row">
     <div class="col-lg-12">
-      <button type="button" onclick="" class="btn btn-success">Day 1 AM</button>
-      <button type="button" onclick="" class="btn btn-success">Day 1 PM</button>
-      <button type="button" onclick="" class="btn btn-success">Day 2 AM</button>
-      <button type="button" onclick="" class="btn btn-success">Day 2 PM</button>
-      <button type="button" onclick="" class="btn btn-success">Day 3 AM</button>
-      <button type="button" onclick="" class="btn btn-success">Day 3 PM</button>
-      <button type="button" onclick="" class="btn btn-success">Day 4 AM</button>
-      <button type="button" onclick="" class="btn btn-success">Day 4 PM</button>
-      <button type="button" onclick="" class="btn btn-clear">Clear</button>
+      <button type="button" id="onD1am" class="btn btn-success">Day 1 AM</button>
+      <button type="button" id="onD1pm" class="btn btn-success">Day 1 PM</button>
+      <button type="button" id="onD2am" class="btn btn-success">Day 2 AM</button>
+      <button type="button" id="onD2pm" class="btn btn-success">Day 2 PM</button>
+      <button type="button" id="onD3am" class="btn btn-success">Day 3 AM</button>
+      <button type="button" id="onD3pm" class="btn btn-success">Day 3 PM</button>
+      <button type="button" id="onD4am" class="btn btn-success">Day 4 AM</button>
+      <button type="button" id="onD4pm" class="btn btn-success">Day 4 PM</button>
+      <button type="button" id="onClear" class="btn btn-clear">Clear</button>
       <br>
       <br>
     </div>
@@ -75,37 +77,20 @@ FF<!DOCTYPE html>
     <br>
     <br>
     <br>
-<!--     <div>
-      <div id="optionMorning">
-      <input name="updateButton" 
-      type="button" 
-      value="Morning" 
-      onclick="d1()" />
-      </div>
-
-      <div id="optionNight">
-      <input name="updateButton" 
-      type="button" 
-      value="Night" 
-      onclick="night()" />
-      </div>
-      <div id="optionPower">
-      <input name="updateButton" 
-      type="button" 
-      value="Power" 
-      onclick="test()" />
-      </div>
-
-    </div> -->
   </div>
   <div class="miniGraph1"> </div> 
   <div class="miniGraph2"> </div> 
   <div class="miniGraph3"> </div> 
   <div class="miniGraph4"> </div> 
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
   <h4>Created by Ido Kinel, Alexander Roman, and Austin Provansal</h4>
   <h4>Description: Facebook user activity, graphed and analyzed</h4>
     
-  <br><br><br><br><br><br><br><br><br><br>
+  <br>
 
   <h4>Files Submitted:</h4>
 
@@ -257,6 +242,43 @@ d3.csv("final2.csv", function(error, data) {
       console.log(data)
       return " "
     }
+    $('#onD1pm').on('click', function() {
+    
+        svg.selectAll('.n1t').style("fill", 'red');
+    })
+    $('#onD1am').on('click', function() {
+    
+        svg.selectAll('.d1t').style("fill", 'red');
+    })
+    $('#onD2pm').on('click', function() {
+    
+        svg.selectAll('.n2t').style("fill", 'red');
+    })
+    $('#onD2am').on('click', function() {
+    
+        svg.selectAll('.d2t').style("fill", 'red');
+    })
+    $('#onD3pm').on('click', function() {
+    
+        svg.selectAll('.d33t').style("fill", 'red');
+    })
+    $('#onD3am').on('click', function() {
+    
+        svg.selectAll('.d33t').style("fill", 'red');
+    })
+    $('#onD4am').on('click', function() {
+    
+        svg.selectAll('.d4t').style("fill", 'red');
+    })
+    $('#onD4pm').on('click', function() {
+    
+        svg.selectAll('.n4t').style("fill", 'red');
+    })
+    $('onClear').on('click', function() {
+    
+        svg.selectAll('.n4t').style("fill", 'blue');
+    })
+
 
     function parseBool(b) {
       if(b==="0"){
@@ -287,6 +309,7 @@ d3.csv("final2.csv", function(error, data) {
           var n2t = parseBool(d.n2t)
           var n3t = parseBool(d.n3t)
           var n4t = parseBool(d.n4t)
+          var d4t = parseBool(d.d4t)
 
           if(d1t) {
             classStr = classStr + ' ' + 'd1t';
@@ -311,6 +334,9 @@ d3.csv("final2.csv", function(error, data) {
           }
           if(n4t) {
             classStr = classStr + ' ' + 'n4t';
+          }
+          if(d4t) {
+            classStr = classStr + ' ' + 'd4t';
           }
           // console.log(classStr);
         return classStr;
