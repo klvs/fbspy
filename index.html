@@ -315,7 +315,7 @@ var night = (function(){
 ////////////////////////////////////////////////////////
 //////////////////GRAPH1////////////////////////////////
 ////////////////////////////////////////////////////////
-  var width1=200;
+  var width1=225;
   var height1=400;
   
   var x1Value = function(d) {return new Date(d.time1 * 1000);},
@@ -387,8 +387,7 @@ d3.csv("day1.csv", function(error, data) {
       .attr("class", "label")
       .attr("x", width1)
       .attr("y", -6)
-      .style("text-anchor", "end")
-      .text("Time");
+      .style("text-anchor", "end");
   // y-axis
   chart1.append("g")
       .attr("class", "y axis")
@@ -538,8 +537,7 @@ d3.csv("day2.csv", function(error, data) {
       .attr("class", "label")
       .attr("x", width1)
       .attr("y", -6)
-      .style("text-anchor", "end")
-      .text("Time");
+      .style("text-anchor", "end");
   // y-axis
   chart2.append("g")
       .attr("class", "y axis")
@@ -549,8 +547,7 @@ d3.csv("day2.csv", function(error, data) {
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Person");
+      .style("text-anchor", "end");
       var ll = 50;
       var rectHeight = height1/hardYRange;
      
@@ -684,8 +681,7 @@ d3.csv("day3.csv", function(error, data) {
       .attr("class", "label")
       .attr("x", width1)
       .attr("y", -6)
-      .style("text-anchor", "end")
-      .text("Time");
+      .style("text-anchor", "end");
   // y-axis
   chart3.append("g")
       .attr("class", "y axis")
@@ -695,8 +691,7 @@ d3.csv("day3.csv", function(error, data) {
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Person");
+      .style("text-anchor", "end");
       //var rectWidth = length;
       //var rectWidth = length / 1000;
       var ll = 50;
@@ -840,8 +835,7 @@ d3.csv("day4.csv", function(error, data) {
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Person");
+      .style("text-anchor", "end");
       //var rectWidth = length;
       //var rectWidth = length / 1000;
       var ll = 50;

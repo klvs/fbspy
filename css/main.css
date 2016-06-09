@@ -28,13 +28,26 @@ body {
 }
 .miniGraph1{
  display:inline-block; 
+position: absolute;
+top: 500;
+left: -25;
 }
 .miniGraph2{
  display:inline-block; 
+position: absolute;
+top: 500;
+left: 200;
 }.miniGraph3{
   display:inline-block;
+position: absolute;
+    top: 500;
+    left: 425;
+
 }.miniGraph4{
   display:inline-block;
+    position: absolute;
+    top: 500;
+    left: 650;
 }
 
 .miniGraph1 .y .tick {
